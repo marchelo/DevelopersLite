@@ -1,0 +1,84 @@
+#
+# generated on 2016/05/10 12:13:23
+#
+# --table-start--
+dataClass=com.marchelo.developerslite.model.Post
+tableName=posts
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+indexName=posts_id_idx
+# --field-end--
+# --field-start--
+fieldName=postId
+columnName=postId
+unique=true
+indexName=posts_postId_idx
+# --field-end--
+# --field-start--
+fieldName=description
+columnName=description
+# --field-end--
+# --field-start--
+fieldName=votes
+columnName=votes
+indexName=posts_votes_idx
+# --field-end--
+# --field-start--
+fieldName=author
+columnName=author
+# --field-end--
+# --field-start--
+fieldName=date
+columnName=date
+dataPersister=DATE_LONG
+# --field-end--
+# --field-start--
+fieldName=gifURL
+columnName=gifURL
+# --field-end--
+# --field-start--
+fieldName=previewURL
+columnName=previewURL
+# --field-end--
+# --field-start--
+fieldName=coubEmbedId
+columnName=embedId
+# --field-end--
+# --field-start--
+fieldName=type
+columnName=type
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.marchelo.developerslite.model.Favorite
+tableName=favorites
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=id
+generatedId=true
+indexName=favorites_id_idx
+allowGeneratedIdInsert=true
+# --field-end--
+# --field-start--
+fieldName=postId
+columnName=post_id
+unique=true
+indexName=favorites_post_id_idx
+# --field-end--
+# --field-start--
+fieldName=gifURL
+columnName=gif_url
+# --field-end--
+# --field-start--
+fieldName=previewURL
+columnName=preview_url
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/colorSecondaryDark</item>
+    </style>
+
+    <!-- Gif viewer theme. -->
+    <style name="GifViewerTheme" parent="AppBaseTheme">
+        <item name="android:statusBarColor">@android:color/black</item>
+    </style>
+</resources>

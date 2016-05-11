@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="action_bar_height">60dp</dimen>
+    <dimen name="navigation_view_textSize">@dimen/text_size_medium</dimen>
+
+    <dimen name="fragment_post_list_left_margin">16dp</dimen>
+    <dimen name="fragment_post_list_right_margin">16dp</dimen>
+
+    <dimen name="post_list_divider_height">16dp</dimen>
+    <dimen name="post_layout_padding">20dp</dimen>
+
+    <dimen name="favorites_list_item_height">140dp</dimen>
+</resources>

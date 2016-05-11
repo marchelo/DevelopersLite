@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="description_max_collapsed_lines" format="integer" type="integer">3</item>
+</resources>

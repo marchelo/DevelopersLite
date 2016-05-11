@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.marchelo.developerslite.view.ExpandableTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_description"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    expandableTextView:animDuration="200"
+    expandableTextView:maxCollapsedLines="@integer/description_max_collapsed_lines"
+    android:transitionName="@string/transition_name_description"
+    tools:text="Some very interesting title"
+    tools:ignore="UnusedAttribute">
+
+    <TextView
+        android:id="@id/expandable_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/HeaderText"
+        tools:text="Some very interesting title" />
+
+    <!--suppress AndroidElementNotAllowed -->
+    <ImageButton
+        android:id="@id/expand_collapse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:background="@android:color/transparent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/expand_text_hint"/>
+</com.marchelo.developerslite.view.ExpandableTextView>

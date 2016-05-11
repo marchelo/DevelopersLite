@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="logo_text_size">16dp</dimen>
+    <dimen name="logo_text_marginBottom">23dp</dimen>
+</resources>

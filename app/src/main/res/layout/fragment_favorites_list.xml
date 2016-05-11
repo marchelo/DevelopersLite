@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@android:color/black">
+
+    <GridView
+        android:id="@+id/favorites_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:scrollbarStyle="outsideOverlay"
+        android:numColumns="@integer/favorite_gif_grid_column_count"
+        android:horizontalSpacing="@dimen/favorites_list_divider"
+        android:verticalSpacing="@dimen/favorites_list_divider"
+        android:scrollbars="vertical"
+        android:choiceMode="multipleChoiceModal"
+        tools:listitem="@layout/item_view_favorite" />
+
+    <TextView
+        android:id="@+id/favorites_list_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="Press #\n\n to add items to favorites" />
+</FrameLayout>

@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="HeaderText">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="CommonText">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="PostActionButton">
+        <item name="android:padding">15dp</item>
+        <item name="android:elevation" tools:ignore="NewApi">2dp</item>
+    </style>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.marchelo.developerslite.view.GifContainer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gif_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    tools:showIn="@layout/activity_post_details">
+
+    <include
+        layout="@layout/layout_image_and_controls" />
+
+</com.marchelo.developerslite.view.GifContainer>

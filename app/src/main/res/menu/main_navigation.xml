@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_primary"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/navigation_item_last"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/title_last"/>
+        <item
+            android:id="@+id/navigation_item_best"
+            android:icon="@drawable/ic_grade_black_24dp"
+            android:title="@string/title_best"/>
+        <item
+            android:id="@+id/navigation_item_hot"
+            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:title="@string/title_hot"/>
+        <item
+            android:id="@+id/navigation_item_random"
+            android:icon="@drawable/ic_shuffle_black_24dp"
+            android:title="@string/title_random"/>
+    </group>
+
+    <group
+        android:id="@+id/group_secondary"
+        android:checkableBehavior="all"
+        android:visible="true">
+
+        <item
+            android:id="@+id/navigation_item_search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="@string/title_search" />
+        <item
+            android:id="@+id/navigation_item_bookmarks"
+            android:icon="@drawable/ic_bookmark_black_24dp"
+            android:title="@string/title_bookmarks" />
+    </group>
+
+    <group
+        android:id="@+id/group_other"
+        android:checkableBehavior="none"
+        android:visible="true">
+        <item
+            android:id="@+id/navigation_item_favorites"
+            android:icon="@drawable/ic_favorite_black_18dp"
+            android:title="@string/title_favorites" />
+        <item
+            android:id="@+id/navigation_item_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/title_settings"
+            android:visible="false"/>
+    </group>
+</menu>

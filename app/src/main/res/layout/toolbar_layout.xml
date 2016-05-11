@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/action_bar_height"
+    android:background="?attr/colorPrimary"
+    android:elevation="5dp"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    tools:ignore="UnusedAttribute"
+    tools:showIn="@layout/activity_post_details">
+
+    <ImageView
+        android:id="@+id/toolbar_stub_home_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_home_white_36dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:textAppearance="@style/ToolbarTextAppearance"
+        tools:text="Best"
+        tools:visibility="gone"/>
+
+    <Spinner
+        android:id="@+id/toolbar_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toolbar_spinner_bg"
+        android:visibility="gone"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        tools:listitem="@layout/simple_spinner_dropdown_item"
+        tools:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/toolbar_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        android:background="@drawable/search_field_bg"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/icon_toolbar_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_search_black_24dp"
+            android:contentDescription="@string/toolbar_search_clear_search_hint" />
+
+        <EditText
+            android:id="@+id/txt_toolbar_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryPale"
+            android:imeOptions="actionSearch"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/toolbar_search_field_hint"
+            tools:text="Search Text"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/btn_toolbar_search_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_close_black_24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/toolbar_search_clear_search_hint" />
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

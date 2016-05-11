@@ -1,0 +1,4 @@
+/build
+release_key.keystore
+release_config.properties
+fabric.properties

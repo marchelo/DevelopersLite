@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:src="@drawable/logo"
+        android:contentDescription="@string/logo_image_description" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/logo_text_marginBottom"
+        android:paddingRight="13dp"
+        android:paddingEnd="13dp"
+        android:layout_alignLeft="@+id/logo"
+        android:layout_alignStart="@+id/logo"
+        android:layout_alignRight="@+id/logo"
+        android:layout_alignEnd="@+id/logo"
+        android:textSize="@dimen/logo_text_size"
+        android:lineSpacingMultiplier="0.8"
+        android:gravity="end"
+        android:textColor="@color/gray_color"
+        android:text="@string/logo_text"
+        tools:ignore="RtlSymmetry,SpUsage" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#d1d1d1"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_open_in_browser"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:padding="5dp"
+        android:backgroundTint="@color/color_button_selector"
+        android:background="@drawable/ic_open_in_browser_black_24dp"
+        android:contentDescription="@string/open_in_browser_hint" />
+
+    <ImageButton
+        android:id="@+id/btn_open_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/btn_open_in_browser"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:padding="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_settings_applications_black_24dp"
+        android:visibility="gone"
+        android:contentDescription="@string/open_settings_hint" />
+</RelativeLayout>

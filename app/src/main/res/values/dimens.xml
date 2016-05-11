@@ -1,0 +1,32 @@
+<resources>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="action_bar_height">56dp</dimen>
+    <dimen name="navigation_view_textSize">@dimen/text_size_medium</dimen>
+
+    <dimen name="logo_text_size">17dp</dimen>
+    <dimen name="logo_text_marginBottom">26dp</dimen>
+
+    <dimen name="fragment_post_list_left_margin">6dp</dimen>
+    <dimen name="fragment_post_list_right_margin">6dp</dimen>
+
+    <dimen name="posts_list_paddingTop">66dp</dimen>
+    <dimen name="favorites_list_paddingTop">56dp</dimen>
+    <dimen name="favorites_list_item_height">100dp</dimen>
+    <dimen name="post_list_divider_height">6dp</dimen>
+    <dimen name="refresh_layout_progress_view_end">120dp</dimen>
+    <dimen name="post_action_button_width">48dp</dimen>
+    <dimen name="post_action_button_height">42dp</dimen>
+    <dimen name="post_share_button_size">40dp</dimen>
+    <dimen name="post_layout_padding">6dp</dimen>
+    <dimen name="post_toolbar_bg_border_size">2dp</dimen>
+    <dimen name="post_toolbar_bg_corner_radius">7dp</dimen>
+
+    <dimen name="fragment_post_list_height">180dp</dimen>
+
+    <dimen name="favorites_list_divider">2dp</dimen>
+</resources>

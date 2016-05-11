@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="fragment_post_list_left_margin">10dp</dimen>
+    <dimen name="fragment_post_list_right_margin">10dp</dimen>
+
+    <dimen name="posts_list_paddingTop">70dp</dimen>
+    <dimen name="post_list_divider_height">10dp</dimen>
+    <dimen name="post_layout_padding">10dp</dimen>
+
+    <dimen name="favorites_list_item_height">120dp</dimen>
+</resources>
