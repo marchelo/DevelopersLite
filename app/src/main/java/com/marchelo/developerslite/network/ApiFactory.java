@@ -11,8 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 /**
@@ -32,12 +33,14 @@ public class ApiFactory {
 //        String date = "Aug 16, 2013 12:33:00 PM";
 //        Log.d("test2", " result date = " + POST_DATE_FORMAT.format(new Date()));
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.WEB_SERVICE_BASE_URL)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(new GsonConverter(gson))
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.WEB_SERVICE_BASE_URL)
+                //TODO
+//                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        WEB_SERVICE = restAdapter.create(DevLifeService.class);
+        WEB_SERVICE = retrofit.create(DevLifeService.class);
     }
 
     public static ApiByPage lastPostsApi() {
