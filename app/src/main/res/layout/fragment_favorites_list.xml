@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@android:color/black">
+             android:background="@android:color/black">
 
     <GridView
         android:id="@+id/favorites_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
         android:scrollbarStyle="outsideOverlay"
         android:numColumns="@integer/favorite_gif_grid_column_count"
         android:horizontalSpacing="@dimen/favorites_list_divider"
