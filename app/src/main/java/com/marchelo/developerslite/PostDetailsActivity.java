@@ -14,14 +14,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koushikdutta.async.future.Future;
+import com.marchelo.developerslite.details.CommentsAdapter;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.network.ApiFactory;
 import com.marchelo.developerslite.utils.DeviceUtils;
@@ -61,6 +64,8 @@ public class PostDetailsActivity extends AppCompatActivity {
     private WeakReference<Future> mFutureRef = new WeakReference<>(null);
     private LoadGifImageReactor.LoadResultCallback mLoadResultCallback;
     private Handler mUiHandler;
+
+    private ListView mPostDetailsListView;
 
     @Bind(R.id.toolbar_title) TextView              mTitle;
     @Bind(R.id.gif_image) GifImageButton            gifImageView;
@@ -104,6 +109,12 @@ public class PostDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
+
+        mPostDetailsListView = (ListView) findViewById(R.id.list_view_post_details);
+        View mHeaderView = LayoutInflater.from(this).inflate(R.layout.header_view_post_details, null);
+        mPostDetailsListView.addHeaderView(mHeaderView, null, false);
+        mPostDetailsListView.setAdapter(new CommentsAdapter(this));
+
         ButterKnife.bind(this);
 
         Icepick.restoreInstanceState(this, savedInstanceState);
@@ -298,7 +309,6 @@ public class PostDetailsActivity extends AppCompatActivity {
             if (isChecked) {
                 progressBar.setVisibility(View.VISIBLE);
 
-            } else {
             }
         });
 
