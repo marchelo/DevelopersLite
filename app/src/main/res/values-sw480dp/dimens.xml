@@ -8,5 +8,5 @@
     <dimen name="post_list_divider_height">16dp</dimen>
     <dimen name="post_layout_padding">20dp</dimen>
 
-    <dimen name="favorites_list_item_height">140dp</dimen>
+    <dimen name="favorites_list_item_height">160dp</dimen>
 </resources>
