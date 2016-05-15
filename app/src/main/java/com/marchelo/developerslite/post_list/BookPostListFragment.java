@@ -1,28 +1,26 @@
 package com.marchelo.developerslite.post_list;
 
-import android.database.Cursor;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.j256.ormlite.android.AndroidDatabaseResults;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.CloseableIterator;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.db.DbHelper;
 import com.marchelo.developerslite.model.Post;
+import com.marchelo.developerslite.utils.SmartLoader;
 import com.marchelo.developerslite.view.DividerItemDecorator;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Oleg Green
  * @since 17.01.16
  */
-public class BookPostListFragment extends APostListFragment {
-
-    protected BookmarkPostListAdapter mPostsAdapter;
+public class BookPostListFragment extends APostListFragment implements LoaderManager.LoaderCallbacks<List<Post>> {
 
     public static BookPostListFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -35,50 +33,55 @@ public class BookPostListFragment extends APostListFragment {
     @Override
     public void onCreateView(Bundle savedInstanceState) {
         mPostListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mPostListView.setHasFixedSize(false);
-
-        DbHelper databaseHelper
-                = OpenHelperManager.getHelper(getActivity(), DbHelper.class);
-
-        initAdapterWithNewDataCursor(databaseHelper);
-
+        mPostListView.setAdapter(new BookmarkPostListAdapter(getActivity()));
         mPostListView.addOnScrollListener(new QuickReturnScrollListener(mListener));
-        mPostListView.setEmptyView(mEmptyView);
-
         int dividerHeight = getResources().getDimensionPixelSize(R.dimen.post_list_divider_height);
         mPostListView.addItemDecoration(new DividerItemDecorator(dividerHeight));
+        mPostListView.setEmptyView(mEmptyView);
+        mPostListView.setHasFixedSize(false);
 
         int end = getResources().getDimensionPixelSize(R.dimen.refresh_layout_progress_view_end);
         mSwipeLayout.setProgressViewEndTarget(false, end);
-        mSwipeLayout.setOnRefreshListener(() -> initAdapterWithNewDataCursor(databaseHelper));
+        mSwipeLayout.setOnRefreshListener(() -> getLoaderManager().getLoader(GetPostsLoader.ID).onContentChanged());
+        mSwipeLayout.setRefreshing(false);
 
-        /*if (savedInstanceState == null) {
-            //TODO load new data from db
-            mSwipeLayout.setRefreshing(true);
-        }*//* else {
-            mPostsAdapter.notifyDataSetChanged();
-        }*/
+        getLoaderManager().initLoader(GetPostsLoader.ID, null, this);
     }
 
-    private void initAdapterWithNewDataCursor(DbHelper databaseHelper) {
+    @Override
+    public Loader<List<Post>> onCreateLoader(int id, Bundle args) {
+        return new GetPostsLoader(getActivity());
+    }
 
-        CloseableIterator<Post> iterator = null;
-        try {
-            Dao<Post, Long> postDao = databaseHelper.getPostDao();
-            QueryBuilder<Post, Long> qb = postDao.queryBuilder();
-            iterator = postDao.iterator(qb.orderBy(Post.Column.ID, false).prepare());
-            AndroidDatabaseResults results = (AndroidDatabaseResults) iterator.getRawResults();
-            Cursor cursor = results.getRawCursor();
-            mPostsAdapter = new BookmarkPostListAdapter(getActivity(), cursor);
+    @Override
+    public void onLoadFinished(Loader<List<Post>> loader, List<Post> data) {
+        BookmarkPostListAdapter adapter = (BookmarkPostListAdapter) mPostListView.getAdapter();
+        adapter.setData(data);
+        adapter.notifyDataSetChanged();
 
-            mPostListView.setAdapter(mPostsAdapter);
-            mSwipeLayout.setRefreshing(false);
+        mSwipeLayout.setRefreshing(false);
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //noinspection ConstantConditions
-            if (iterator != null) {
-                iterator.closeQuietly();
+    @Override
+    public void onLoaderReset(Loader<List<Post>> loader) {
+        //do nothing
+    }
+
+    ///loader
+    private static class GetPostsLoader extends SmartLoader<List<Post>> {
+        public static final int ID = 555;
+
+        public GetPostsLoader(Context context) {
+            super(context);
+        }
+
+        @Override
+        public List<Post> loadInBackground() {
+            try {
+                return DbHelper.from(getContext()).getAllPosts();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return Collections.emptyList();
             }
         }
     }

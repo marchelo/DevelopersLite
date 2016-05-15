@@ -1,8 +1,8 @@
 package com.marchelo.developerslite.post_list;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,20 +10,25 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.db.DbHelper;
 import com.marchelo.developerslite.model.Post;
-import com.marchelo.developerslite.view.CursorRecyclerViewAdapter;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BookmarkPostListAdapter extends CursorRecyclerViewAdapter<PostViewHolder> {
+public class BookmarkPostListAdapter extends RecyclerView.Adapter<PostViewHolder> {
     private final LayoutInflater mInflater;
     private final Handler mUiHandler;
     private final DbHelper mDbHelper;
+    private final List<Post> mItems = new ArrayList<>();
 
-    public BookmarkPostListAdapter(Context context, Cursor cursor) {
-        super(context, cursor);
+    public BookmarkPostListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
         mUiHandler = new Handler();
         mDbHelper = OpenHelperManager.getHelper(context, DbHelper.class);
+    }
+
+    public void setData(List<Post> items) {
+        mItems.clear();
+        mItems.addAll(items);
     }
 
     @Override
@@ -32,18 +37,12 @@ public class BookmarkPostListAdapter extends CursorRecyclerViewAdapter<PostViewH
     }
 
     @Override
-    public void onBindViewHolder(PostViewHolder viewHolder, Cursor cursor) {
-        Post post = new Post();
-        post.setId(cursor.getLong(cursor.getColumnIndex(Post.Column.ID)));
-        post.setPostId(cursor.getLong(cursor.getColumnIndex(Post.Column.POST_ID)));
-        post.setDescription(cursor.getString(cursor.getColumnIndex(Post.Column.DESC)));
-        post.setVotes(cursor.getInt(cursor.getColumnIndex(Post.Column.VOTES)));
-        post.setAuthor(cursor.getString(cursor.getColumnIndex(Post.Column.AUTHOR)));
-        post.setDate(new Date(cursor.getLong(cursor.getColumnIndex(Post.Column.DATE))));
-        post.setPreviewURL(cursor.getString(cursor.getColumnIndex(Post.Column.PREVIEW_URL)));
-        post.setGifURL(cursor.getString(cursor.getColumnIndex(Post.Column.GIF_URL)));
-        post.setType(Post.Type.valueOf(cursor.getString(cursor.getColumnIndex(Post.Column.TYPE))));
+    public void onBindViewHolder(PostViewHolder holder, int position) {
+        holder.bindData(mItems.get(position));
+    }
 
-        viewHolder.bindData(post);
+    @Override
+    public int getItemCount() {
+        return mItems.size();
     }
 }
