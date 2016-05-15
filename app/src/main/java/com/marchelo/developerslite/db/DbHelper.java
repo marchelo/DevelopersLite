@@ -77,6 +77,10 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return postDao;
     }
 
+    public List<Post> getAllPosts() throws SQLException {
+        return getPostDao().queryBuilder().orderBy(Post.Column.ID, false).query();
+    }
+
     private Dao<Favorite, Long> getFavoriteDao() throws SQLException {
         if(favoriteDao == null) {
             favoriteDao = getDao(Favorite.class);
