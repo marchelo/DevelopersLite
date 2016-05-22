@@ -1,12 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/txt_comment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/comment_bg"
-    android:padding="8dp"
-    android:textIsSelectable="true"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    tools:text="Some long long\n user comment" />
+    android:padding="2dp"
+    tools:layout_margin="5dp">
+
+    <TextView
+        android:id="@+id/txt_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black"
+        tools:text="+125"/>
+
+    <TextView
+        android:id="@+id/txt_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/gray_color"
+        tools:text="12.05.1988"/>
+
+    <TextView
+        android:id="@+id/txt_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/txt_rating"
+        android:layout_toLeftOf="@+id/txt_date"
+        android:layout_toRightOf="@+id/txt_rating"
+        android:layout_toStartOf="@+id/txt_date"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/gray_color"
+        tools:text="Smart bustard"/>
+
+    <View
+        android:id="@+id/top_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/txt_date"
+        android:background="@color/colorPrimaryPale"/>
+
+    <TextView
+        android:id="@+id/txt_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_divider"
+        android:layout_marginEnd="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginStart="3dp"
+        android:gravity="fill"
+        android:padding="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        android:textIsSelectable="true"
+        tools:text="Some long long\n user comment"/>
+
+    <!--<View-->
+    <!--android:id="@+id/bottom_divider"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_below="@+id/txt_comment"-->
+    <!--android:background="@color/colorPrimary"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/txt_likes"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:textColor="@color/gray_color"-->
+    <!--android:padding="5dp"-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+    <!--tools:text="12.05.1988"/>-->
+
+</RelativeLayout>

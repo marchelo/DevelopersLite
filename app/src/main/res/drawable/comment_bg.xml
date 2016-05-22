@@ -12,7 +12,7 @@
         android:left="2dp">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/colorBackground" />
+            <solid android:color="@color/colorPrimaryVeryPale" />
         </shape>
     </item>
 </layer-list>
