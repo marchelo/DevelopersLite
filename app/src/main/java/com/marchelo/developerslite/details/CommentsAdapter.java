@@ -88,7 +88,7 @@ public class CommentsAdapter extends BaseAdapter {
         initTextViewWithComment(comment, commentTextView);
 
         commentView.setPadding(
-                adapterItem.itemDepth * mCommentResponseShiftPixels,
+                Math.min(adapterItem.itemDepth * mCommentResponseShiftPixels, Math.round(parent.getWidth() * 0.4f)),
                 commentView.getPaddingTop(),
                 commentView.getPaddingRight(),
                 commentView.getPaddingBottom());
