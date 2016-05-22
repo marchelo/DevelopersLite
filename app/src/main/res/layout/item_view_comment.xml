@@ -7,5 +7,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/comment_bg"
     android:padding="8dp"
+    android:textIsSelectable="true"
     android:textAppearance="?android:attr/textAppearanceMedium"
     tools:text="Some long long\n user comment" />

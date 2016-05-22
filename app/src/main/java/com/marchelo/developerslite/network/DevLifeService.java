@@ -3,6 +3,7 @@ package com.marchelo.developerslite.network;
 import android.support.annotation.IntRange;
 import android.support.annotation.StringDef;
 
+import com.marchelo.developerslite.model.CommentsListHolder;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.model.PostsListHolder;
 
@@ -55,8 +56,11 @@ interface DevLifeService {
     );
 
     @GET("/{id}?json=true")
-    Observable<Post> getPostById(@Path("id") @IntRange(from=0) int id);
+    Observable<Post> getPostById(@Path("id") @IntRange(from=0) long id);
 
     @GET("/random?json=true")
     Observable<Post> getRandomPost();
+
+    @GET("/comments/entry/{id}")
+    Observable<CommentsListHolder> getComments(@Path("id") @IntRange(from=0) long id);
 }
