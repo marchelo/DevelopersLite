@@ -28,6 +28,7 @@ import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.model.CommentsListHolder;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.network.ApiFactory;
+import com.marchelo.developerslite.utils.Config;
 import com.marchelo.developerslite.utils.DeviceUtils;
 import com.marchelo.developerslite.utils.IntentHelper;
 import com.marchelo.developerslite.utils.LoadGifImageReactor;
@@ -61,7 +62,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private static final String POST_TO_SHOW_TAG = "POST_TO_SHOW";
     public static final String IMAGE_RATIO_TAG = "ratio";
 
-    public final DateFormat DATE_TIME_FORMATTER = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    public final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
     private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();
     private final ApiFactory.ApiPostById mApi = ApiFactory.postByIdApi();
     private WeakReference<Future> mFutureRef = new WeakReference<>(null);
@@ -91,7 +92,8 @@ public class PostDetailsActivity extends AppCompatActivity {
 
         //noinspection unchecked
         ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        activity,
                         new Pair<>(
                                 description,
                                 activity.getString(R.string.transition_name_description)),
@@ -105,7 +107,8 @@ public class PostDetailsActivity extends AppCompatActivity {
                                 image,
                                 activity.getString(R.string.transition_name_image))*/
                 );
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
+//        ActivityCompat.startActivity(activity, intent, options.toBundle());
+        activity.startActivity(intent);
     }
 
     @Override
@@ -321,7 +324,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "showCurrentPost(), post = " + mPost);
 
         PostViewHelper.initCommonViews(descriptionView, authorView, ratingView, mPost);
-        dateView.setText(getString(R.string.post_item_date, DATE_TIME_FORMATTER.format(mPost.getDate())));
+        dateView.setText(DATE_TIME_FORMATTER.format(mPost.getDate()));
 
         Observable<CommentsListHolder> postCommentsObservable = mApi.getCommentsByPostId(mPost.getPostId());
         Subscription sub2 = postCommentsObservable
