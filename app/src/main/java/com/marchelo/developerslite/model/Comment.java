@@ -12,6 +12,7 @@ import java.util.Date;
  *  "voteCount":3,
  *  "authorId":814,
  *  "authorName":"misha",
+ *  "parentId":39677,
  *  "entryId":100,
  *  "deleted":false,
  *  "voted":false,
@@ -42,6 +43,9 @@ public class Comment {
     private String authorName;
 
     @Expose
+    private int parentId;
+
+    @Expose
     private int entryId;
 
     @Expose
@@ -52,6 +56,18 @@ public class Comment {
 
     @Expose
     private boolean editable;
+
+    public int getId() {
+        return id;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public int getEntryId() {
+        return entryId;
+    }
 
     public String getText() {
         return text;
