@@ -70,4 +70,11 @@
     <string name="favorites_failed_deletion_msg">Не вдалося видалити вибрані гіфки</string>
     <string name="favorites_failed_restoration_msg">Не вдалося відновити видалені гіфки</string>
     <string name="favorites_success_deletion_msg">Успішно видалено</string>
+    <string name="details_no_comments_text">Немає коментарів</string>
+    <plurals name="details_n_comments_text">
+        <item quantity="one">%d коментар</item>
+        <item quantity="few">%d коментаря</item>
+        <item quantity="many">%d коментарів</item>
+        <item quantity="other">%d коментарів</item>
+    </plurals>
 </resources>
