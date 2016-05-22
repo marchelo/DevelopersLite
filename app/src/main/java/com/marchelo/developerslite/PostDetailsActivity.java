@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.koushikdutta.async.future.Future;
 import com.marchelo.developerslite.details.CommentsAdapter;
+import com.marchelo.developerslite.model.CommentsListHolder;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.network.ApiFactory;
 import com.marchelo.developerslite.utils.DeviceUtils;
@@ -65,8 +66,6 @@ public class PostDetailsActivity extends AppCompatActivity {
     private LoadGifImageReactor.LoadResultCallback mLoadResultCallback;
     private Handler mUiHandler;
 
-    private ListView mPostDetailsListView;
-
     @Bind(R.id.toolbar_title) TextView              mTitle;
     @Bind(R.id.gif_image) GifImageButton            gifImageView;
     @Bind(R.id.tv_description) ExpandableTextView   descriptionView;
@@ -79,6 +78,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     @Bind(R.id.view_load_fail) View                 failToLoadView;
 
     @State Post mPost;
+    private CommentsAdapter mCommentsAdapter;
 
     public static void startActivity(Activity activity, Post postToShow, View description,
                                      View author, View rating, float imageAspectRatio) {
@@ -110,10 +110,11 @@ public class PostDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
 
-        mPostDetailsListView = (ListView) findViewById(R.id.list_view_post_details);
+        ListView postDetailsListView = (ListView) findViewById(R.id.list_view_post_details);
         View mHeaderView = LayoutInflater.from(this).inflate(R.layout.header_view_post_details, null);
-        mPostDetailsListView.addHeaderView(mHeaderView, null, false);
-        mPostDetailsListView.setAdapter(new CommentsAdapter(this));
+        postDetailsListView.addHeaderView(mHeaderView, null, false);
+        mCommentsAdapter = new CommentsAdapter(this);
+        postDetailsListView.setAdapter(mCommentsAdapter);
 
         ButterKnife.bind(this);
 
@@ -178,10 +179,10 @@ public class PostDetailsActivity extends AppCompatActivity {
     private void parseIntent(Intent intent) {
         Uri data = intent.getData();
         String path = data.getPath().length() > 0 ? data.getPath().substring(1) : "";
-        Integer postId = null;
+        Long postId = null;
 
         try {
-            postId = Integer.valueOf(path);
+            postId = Long.valueOf(path);
         } catch (NumberFormatException e) {
             Log.e(TAG, "Failed to parse number from path", e);
         }
@@ -284,7 +285,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void loadPost(int postId) {
+    private void loadPost(long postId) {
         Log.d(TAG, "loadPost(), postId = " + postId);
 
         Observable<Post> postsObservable = mApi.getPostById(postId);
@@ -293,6 +294,13 @@ public class PostDetailsActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onPostLoaded);
         mCompositeSubscription.add(sub);
+
+        Observable<CommentsListHolder> postCommentsObservable = mApi.getCommentsByPostId(postId);
+        Subscription sub2 = postCommentsObservable
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onCommentsLoaded);
+        mCompositeSubscription.add(sub2);
     }
 
     private void onPostLoaded(Post post) {
@@ -300,10 +308,23 @@ public class PostDetailsActivity extends AppCompatActivity {
         showCurrentPost();
     }
 
+    private void onCommentsLoaded(CommentsListHolder commentsListHolder) {
+        Log.d("test2", commentsListHolder.toString());
+        mCommentsAdapter.setData(commentsListHolder.getComments());
+        mCommentsAdapter.notifyDataSetChanged();
+    }
+
     private void showCurrentPost() {
         Log.d(TAG, "showCurrentPost(), post = " + mPost);
 
         PostViewHelper.initCommonViews(descriptionView, authorView, ratingView, mPost);
+
+        Observable<CommentsListHolder> postCommentsObservable = mApi.getCommentsByPostId(mPost.getPostId());
+        Subscription sub2 = postCommentsObservable
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onCommentsLoaded);
+        mCompositeSubscription.add(sub2);
 
         playPause.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
