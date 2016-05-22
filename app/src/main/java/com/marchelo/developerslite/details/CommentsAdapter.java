@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.marchelo.developerslite.BuildConfig;
@@ -27,27 +28,39 @@ import java.util.List;
 public class CommentsAdapter extends BaseAdapter {
     public final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
     private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private final CompoundButton mCommentsHeaderView;
 
     private CommentsAdapterList mData = new CommentsAdapterList();
     private final int mCommentResponseShiftPixels;
 
     public CommentsAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
+        mContext = context;
         mCommentResponseShiftPixels = context.getResources().getDimensionPixelSize(R.dimen.comments_list_response_shift);
+        mCommentsHeaderView = (CompoundButton) mLayoutInflater.inflate(R.layout.header_comments_view, null);
+        mCommentsHeaderView.setOnCheckedChangeListener((buttonView, isChecked) -> notifyDataSetChanged());
     }
 
     public void setData(List<Comment> data) {
         mData = CommentsAdapterList.from(data);
+        int size = mData.getItems().size();
+        if (size > 0) {
+            mCommentsHeaderView.setText(mContext.getResources().getQuantityString(R.plurals.details_n_comments_text, size, size));
+
+        } else {
+            mCommentsHeaderView.setText(R.string.details_no_comments_text);
+        }
     }
 
     @Override
     public int getCount() {
-        return mData.getItems().size();
+        return mCommentsHeaderView.isChecked() ? (mData.getItems().size() + 1) : 1;
     }
 
     @Override
     public CommentsAdapterListItem getItem(int position) {
-        return mData.getItems().get(position);
+        return mData.getItems().get(position - 1);
     }
 
     @Override
@@ -57,6 +70,10 @@ public class CommentsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        if (position == 0) {
+            return mCommentsHeaderView;
+        }
+
         CommentsAdapterListItem adapterItem = getItem(position);
         Comment comment = adapterItem.comment;
 
