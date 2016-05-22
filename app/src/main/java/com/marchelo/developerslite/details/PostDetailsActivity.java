@@ -1,4 +1,4 @@
-package com.marchelo.developerslite;
+package com.marchelo.developerslite.details;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koushikdutta.async.future.Future;
-import com.marchelo.developerslite.details.CommentsAdapter;
+import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.model.CommentsListHolder;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.network.ApiFactory;
