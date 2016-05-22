@@ -16,6 +16,7 @@
 
     <color name="gray_color">#717171</color>
     <color name="light_gray_color">#919191</color>
+    <color name="very_light_gray_color">#c1c1c1</color>
 
     <drawable name="favorites_list_selector_checked_color">#88ffffff</drawable>
     <drawable name="favorites_list_selector_pressed_color">#44666666</drawable>

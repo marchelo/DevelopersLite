@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.marchelo.developerslite.BuildConfig;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.model.Comment;
+import com.marchelo.developerslite.utils.Config;
 import com.marchelo.developerslite.utils.HtmlImproveHelper;
 import com.marchelo.developerslite.utils.LinkifyModified;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * @since 15.05.16
  */
 public class CommentsAdapter extends BaseAdapter {
-    public final DateFormat DATE_TIME_FORMATTER = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    public final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
     private final LayoutInflater mLayoutInflater;
 
     private CommentsAdapterList mData = new CommentsAdapterList();
@@ -64,6 +65,22 @@ public class CommentsAdapter extends BaseAdapter {
         TextView authorTextView = (TextView) commentView.findViewById(R.id.txt_author);
         TextView dateTextView = (TextView) commentView.findViewById(R.id.txt_date);
         TextView ratingTextView = (TextView) commentView.findViewById(R.id.txt_rating);
+        View layoutBgView = commentView.findViewById(R.id.layout_bg);
+        View topDivider = commentView.findViewById(R.id.top_divider);
+
+        if (comment.getVoteCount() >= 0) {
+            layoutBgView.setBackgroundResource(R.drawable.comment_positive_bg);
+            topDivider.setBackgroundColor(parent.getResources().getColor(R.color.colorPrimaryPale));
+            commentTextView.setTextColor(parent.getResources().getColor(android.R.color.black));
+            authorTextView.setTextColor(parent.getResources().getColor(R.color.gray_color));
+            dateTextView.setTextColor(parent.getResources().getColor(R.color.gray_color));
+        } else {
+            layoutBgView.setBackgroundResource(R.drawable.comment_negative_bg);
+            topDivider.setBackgroundColor(parent.getResources().getColor(R.color.very_light_gray_color));
+            commentTextView.setTextColor(parent.getResources().getColor(R.color.gray_color));
+            authorTextView.setTextColor(parent.getResources().getColor(R.color.very_light_gray_color));
+            dateTextView.setTextColor(parent.getResources().getColor(R.color.very_light_gray_color));
+        }
 
         authorTextView.setText(comment.getAuthorName());
         dateTextView.setText(DATE_TIME_FORMATTER.format(comment.getDate()));
