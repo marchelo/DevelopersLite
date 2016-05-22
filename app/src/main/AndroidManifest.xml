@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".PostDetailsActivity">
+            android:name=".details.PostDetailsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

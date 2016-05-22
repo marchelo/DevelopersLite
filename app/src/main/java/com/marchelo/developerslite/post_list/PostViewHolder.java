@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 import com.koushikdutta.async.future.Future;
 import com.marchelo.developerslite.DevLifeApplication;
-import com.marchelo.developerslite.PostDetailsActivity;
+import com.marchelo.developerslite.details.PostDetailsActivity;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.db.DbHelper;
 import com.marchelo.developerslite.model.Favorite;
