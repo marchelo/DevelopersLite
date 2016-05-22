@@ -14,6 +14,7 @@ import com.marchelo.developerslite.model.Comment;
 import com.marchelo.developerslite.utils.HtmlImproveHelper;
 import com.marchelo.developerslite.utils.LinkifyModified;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import java.util.List;
  * @since 15.05.16
  */
 public class CommentsAdapter extends BaseAdapter {
+    public final DateFormat DATE_TIME_FORMATTER = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
     private final LayoutInflater mLayoutInflater;
     private List<Comment> mData = new ArrayList<>(0);
 
@@ -53,9 +55,15 @@ public class CommentsAdapter extends BaseAdapter {
         Comment comment = getItem(position);
 
         View commentView = mLayoutInflater.inflate(R.layout.item_view_comment, parent, false);
-        TextView textView = (TextView) commentView.findViewById(R.id.txt_comment);
+        TextView commentTextView = (TextView) commentView.findViewById(R.id.txt_comment);
+        TextView authorTextView = (TextView) commentView.findViewById(R.id.txt_author);
+        TextView dateTextView = (TextView) commentView.findViewById(R.id.txt_date);
+        TextView ratingTextView = (TextView) commentView.findViewById(R.id.txt_rating);
 
-        initTextViewWithComment(comment, textView);
+        authorTextView.setText(comment.getAuthorName());
+        dateTextView.setText(DATE_TIME_FORMATTER.format(comment.getDate()));
+        ratingTextView.setText(String.valueOf(comment.getVoteCount()));
+        initTextViewWithComment(comment, commentTextView);
 
         return commentView;
     }
