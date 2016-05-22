@@ -37,6 +37,7 @@ import com.marchelo.developerslite.view.ExpandableTextView;
 import com.marchelo.developerslite.view.ImageShareToolbar;
 
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +61,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private static final String POST_TO_SHOW_TAG = "POST_TO_SHOW";
     public static final String IMAGE_RATIO_TAG = "ratio";
 
+    public final DateFormat DATE_TIME_FORMATTER = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
     private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();
     private final ApiFactory.ApiPostById mApi = ApiFactory.postByIdApi();
     private WeakReference<Future> mFutureRef = new WeakReference<>(null);
@@ -71,6 +73,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     @Bind(R.id.tv_description) ExpandableTextView   descriptionView;
     @Bind(R.id.tv_author) TextView                  authorView;
     @Bind(R.id.tv_rating) TextView                  ratingView;
+    @Bind(R.id.tv_date) TextView                    dateView;
     @Bind(R.id.btn_play_pause) CompoundButton       playPause;
     @Bind(R.id.progress_bar) ProgressBar            progressBar;
     @Bind(R.id.image_container) ImageContainer      imageContainer;
@@ -318,6 +321,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "showCurrentPost(), post = " + mPost);
 
         PostViewHelper.initCommonViews(descriptionView, authorView, ratingView, mPost);
+        dateView.setText(getString(R.string.post_item_date, DATE_TIME_FORMATTER.format(mPost.getDate())));
 
         Observable<CommentsListHolder> postCommentsObservable = mApi.getCommentsByPostId(mPost.getPostId());
         Subscription sub2 = postCommentsObservable
