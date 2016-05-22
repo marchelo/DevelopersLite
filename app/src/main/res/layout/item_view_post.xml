@@ -106,6 +106,7 @@
                 android:background="@drawable/post_toolbar_bg_middle"
                 android:contentDescription="@string/btn_share_post_hint"
                 android:src="@drawable/ic_share_black_24dp"
+                android:visibility="gone"
                 tools:ignore="UnusedAttribute" />
 
             <ImageButton
