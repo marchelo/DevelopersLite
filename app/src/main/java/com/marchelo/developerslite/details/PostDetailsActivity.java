@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koushikdutta.async.future.Future;
+import com.marchelo.developerslite.BuildConfig;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.model.CommentsListHolder;
 import com.marchelo.developerslite.model.Post;
@@ -315,7 +316,6 @@ public class PostDetailsActivity extends AppCompatActivity {
     }
 
     private void onCommentsLoaded(CommentsListHolder commentsListHolder) {
-        Log.d("test2", commentsListHolder.toString());
         mCommentsAdapter.setData(commentsListHolder.getComments());
         mCommentsAdapter.notifyDataSetChanged();
     }

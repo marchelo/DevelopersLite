@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +107,7 @@ public class CommentsAdapter extends BaseAdapter {
         initTextViewWithComment(comment, commentTextView);
 
         commentView.setPadding(
-                Math.min(adapterItem.itemDepth * mCommentResponseShiftPixels, Math.round(parent.getWidth() * 0.4f)),
+                Math.min(adapterItem.itemDepth * mCommentResponseShiftPixels, Math.round(parent.getWidth() * 0.3f)),
                 commentView.getPaddingTop(),
                 commentView.getPaddingRight(),
                 commentView.getPaddingBottom());
@@ -138,9 +140,15 @@ public class CommentsAdapter extends BaseAdapter {
     }
 
     private void initTextViewWithComment(Comment comment, TextView textView) {
-        Spanned spanned = Html.fromHtml(comment.getText(), null, null);
-        textView.setText(HtmlImproveHelper.replaceImageSpansWithPlainText(spanned));
+        String commentText = comment.getText();
+        if (TextUtils.isEmpty(commentText)) {
+            textView.setText("");
 
-        LinkifyModified.addLinks(textView);
+        } else {
+            Spanned spanned = Html.fromHtml(commentText, null, null);
+            textView.setText(HtmlImproveHelper.replaceImageSpansWithPlainText(spanned));
+
+            LinkifyModified.addLinks(textView);
+        }
     }
 }

@@ -71,7 +71,7 @@ public class CommentsAdapterListItem {
             List<CommentsAdapterListItem> resultChildren = new ArrayList<>(children.size());
 
             for (CommentsAdapterListItem.Builder childBuilder : children) {
-                resultChildren.add(childBuilder.build(result, ++itemDepth));
+                resultChildren.add(childBuilder.build(result, itemDepth + 1));
             }
 
             Collections.sort(resultChildren, CommentsAdapterList.DATE_COMPARATOR);

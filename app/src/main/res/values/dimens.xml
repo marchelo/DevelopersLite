@@ -29,5 +29,5 @@
     <dimen name="fragment_post_list_height">180dp</dimen>
 
     <dimen name="favorites_list_divider">2dp</dimen>
-    <dimen name="comments_list_response_shift">20dp</dimen>
+    <dimen name="comments_list_response_shift">10dp</dimen>
 </resources>
