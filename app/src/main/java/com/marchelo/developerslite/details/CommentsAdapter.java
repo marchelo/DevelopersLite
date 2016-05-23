@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.marchelo.developerslite.model.Comment;
 import com.marchelo.developerslite.utils.Config;
 import com.marchelo.developerslite.utils.HtmlImproveHelper;
 import com.marchelo.developerslite.utils.LinkifyModified;
+import com.marchelo.developerslite.utils.StorageUtils;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -41,7 +41,11 @@ public class CommentsAdapter extends BaseAdapter {
         mContext = context;
         mCommentResponseShiftPixels = context.getResources().getDimensionPixelSize(R.dimen.comments_list_response_shift);
         mCommentsHeaderView = (CompoundButton) mLayoutInflater.inflate(R.layout.header_comments_view, null);
-        mCommentsHeaderView.setOnCheckedChangeListener((buttonView, isChecked) -> notifyDataSetChanged());
+        mCommentsHeaderView.setChecked(StorageUtils.isExpandCommentsEnabled(context));
+        mCommentsHeaderView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            StorageUtils.setExpandCommentsEnabled(context, isChecked);
+            notifyDataSetChanged();
+        });
     }
 
     public void setData(List<Comment> data) {

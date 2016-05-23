@@ -1,5 +1,6 @@
 package com.marchelo.developerslite.details;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
@@ -91,7 +91,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         intent.putExtra(POST_TO_SHOW_TAG, postToShow);
         intent.putExtra(IMAGE_RATIO_TAG, imageAspectRatio);
 
-        //noinspection unchecked
+        //noinspection unchecked,unused
         ActivityOptionsCompat options =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
                         activity,
@@ -352,6 +352,10 @@ public class PostDetailsActivity extends AppCompatActivity {
                 true);
 
         mFutureRef = new WeakReference<>(future);
+
+        if (BuildConfig.DEBUG) {
+            appendPostIdToTitle();
+        }
     }
 
     private void onAspectRatioDetected(float aspectRatio) {
@@ -359,5 +363,10 @@ public class PostDetailsActivity extends AppCompatActivity {
             imageContainer.setAspectRatio(aspectRatio);
             imageContainer.invalidate();
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void appendPostIdToTitle() {
+        mTitle.setText(mTitle.getText() + "(" + mPost.getPostId() + ")");
     }
 }
