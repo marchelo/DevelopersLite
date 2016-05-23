@@ -11,6 +11,7 @@ public final class StorageUtils {
     public static final String AUTO_LOAD_GIF_IMAGES_KEY = "AUTO_LOAD_GIF_IMAGES";
     private static final String CATEGORY_SELECTED_TYPE_KEY = "CATEGORY_SELECTED_TYPE";
     private static final String BEST_CATEGORY_SELECTED_TYPE_KEY = "BEST_CATEGORY_SELECTED_TYPE";
+    private static final String AUTO_EXPAND_COMMENTS_KEY = "AUTO_EXPAND_COMMENTS";
 
     private StorageUtils() {
         //hide
@@ -42,5 +43,13 @@ public final class StorageUtils {
 
     private static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+    }
+
+    public static boolean isExpandCommentsEnabled(Context context) {
+        return getSharedPreferences(context).getBoolean(AUTO_EXPAND_COMMENTS_KEY, true);
+    }
+
+    public static void setExpandCommentsEnabled(Context context, boolean enabled) {
+        getSharedPreferences(context).edit().putBoolean(AUTO_EXPAND_COMMENTS_KEY, enabled).commit();
     }
 }
