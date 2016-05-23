@@ -29,12 +29,16 @@ import java.util.List;
  */
 public class CommentsAdapter extends BaseAdapter {
     public final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
+    private final CompoundButton mCommentsHeaderView;
+    private final int mCommentResponseShiftPixels;
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
-    private final CompoundButton mCommentsHeaderView;
 
     private CommentsAdapterList mData = new CommentsAdapterList();
-    private final int mCommentResponseShiftPixels;
+    private int mVeryLightGrayColor;
+    private int mGrayColor;
+    private int mColorPrimaryPale;
+    private int mBlackColor;
 
     public CommentsAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -46,6 +50,11 @@ public class CommentsAdapter extends BaseAdapter {
             StorageUtils.setExpandCommentsEnabled(context, isChecked);
             notifyDataSetChanged();
         });
+
+        mVeryLightGrayColor = mContext.getResources().getColor(R.color.very_light_gray_color);
+        mColorPrimaryPale = mContext.getResources().getColor(R.color.colorPrimaryPale);
+        mBlackColor = mContext.getResources().getColor(android.R.color.black);
+        mGrayColor = mContext.getResources().getColor(R.color.gray_color);
     }
 
     public void setData(List<Comment> data) {
@@ -75,6 +84,20 @@ public class CommentsAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == 0) {
             return mCommentsHeaderView;
@@ -83,7 +106,13 @@ public class CommentsAdapter extends BaseAdapter {
         CommentsAdapterListItem adapterItem = getItem(position);
         Comment comment = adapterItem.comment;
 
-        View commentView = mLayoutInflater.inflate(R.layout.item_view_comment, parent, false);
+        View commentView;
+        if (convertView == null) {
+            commentView = mLayoutInflater.inflate(R.layout.item_view_comment, parent, false);
+        } else {
+            commentView = convertView;
+        }
+
         TextView commentTextView = (TextView) commentView.findViewById(R.id.txt_comment);
         TextView authorTextView = (TextView) commentView.findViewById(R.id.txt_author);
         TextView dateTextView = (TextView) commentView.findViewById(R.id.txt_date);
@@ -93,16 +122,17 @@ public class CommentsAdapter extends BaseAdapter {
 
         if (comment.getVoteCount() >= 0) {
             layoutBgView.setBackgroundResource(R.drawable.comment_positive_bg);
-            topDivider.setBackgroundColor(parent.getResources().getColor(R.color.colorPrimaryPale));
-            commentTextView.setTextColor(parent.getResources().getColor(android.R.color.black));
-            authorTextView.setTextColor(parent.getResources().getColor(R.color.gray_color));
-            dateTextView.setTextColor(parent.getResources().getColor(R.color.gray_color));
+            topDivider.setBackgroundColor(mColorPrimaryPale);
+            commentTextView.setTextColor(mBlackColor);
+            authorTextView.setTextColor(mGrayColor);
+            dateTextView.setTextColor(mGrayColor);
+
         } else {
             layoutBgView.setBackgroundResource(R.drawable.comment_negative_bg);
-            topDivider.setBackgroundColor(parent.getResources().getColor(R.color.very_light_gray_color));
-            commentTextView.setTextColor(parent.getResources().getColor(R.color.gray_color));
-            authorTextView.setTextColor(parent.getResources().getColor(R.color.very_light_gray_color));
-            dateTextView.setTextColor(parent.getResources().getColor(R.color.very_light_gray_color));
+            topDivider.setBackgroundColor(mVeryLightGrayColor);
+            commentTextView.setTextColor(mGrayColor);
+            authorTextView.setTextColor(mVeryLightGrayColor);
+            dateTextView.setTextColor(mVeryLightGrayColor);
         }
 
         authorTextView.setText(comment.getAuthorName());
