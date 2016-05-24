@@ -60,11 +60,11 @@
             android:id="@+id/top_divider"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginEnd="2dp"
             android:layout_below="@+id/txt_date"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="2dp"
             android:background="@color/colorPrimaryPale"/>
 
         <TextView
@@ -83,23 +83,49 @@
             android:textIsSelectable="true"
             tools:text="Some long long\n user comment"/>
 
-        <!--<View-->
-        <!--android:id="@+id/bottom_divider"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="2dp"-->
-        <!--android:layout_below="@+id/txt_comment"-->
-        <!--android:background="@color/colorPrimary"/>-->
+        <View
+            android:id="@+id/bottom_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_below="@+id/txt_comment"
+            android:background="@color/colorPrimaryPale"/>
+
+        <ToggleButton
+            android:id="@+id/btn_show_hide_responses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:layout_below="@+id/bottom_divider"
+            android:padding="5dp"
+            android:gravity="start"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/gray_color"
+            android:background="@android:color/transparent"
+            android:button="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_comments_expand_selector"
+            android:drawableStart="@drawable/ic_comments_expand_selector"
+            android:textStyle="italic"
+            android:textOff="show"
+            android:textOn="hide"/>
 
         <!--<TextView-->
-        <!--android:id="@+id/txt_likes"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:textColor="@color/gray_color"-->
-        <!--android:padding="5dp"-->
-        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-        <!--tools:text="12.05.1988"/>-->
-
+            <!--android:id="@+id/txt_responses_count"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_below="@+id/bottom_divider"-->
+            <!--android:ellipsize="end"-->
+            <!--android:gravity="end"-->
+            <!--android:padding="5dp"-->
+            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+            <!--android:textColor="@color/gray_color"-->
+            <!--android:textStyle="italic"-->
+            <!--tools:text="12 responses"/>-->
     </RelativeLayout>
 </FrameLayout>

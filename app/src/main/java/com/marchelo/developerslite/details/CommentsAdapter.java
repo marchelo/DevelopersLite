@@ -1,7 +1,6 @@
 package com.marchelo.developerslite.details;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
@@ -35,12 +34,13 @@ public class CommentsAdapter extends BaseAdapter {
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
 
-    private CommentsAdapterList mData = new CommentsAdapterList();
+    private CommentsAdapterList mAdapterList = new CommentsAdapterList();
     private int mVeryLightGrayColor;
     private int mGrayColor;
     private int mColorPrimaryPale;
     private int mBlackColor;
 
+    @SuppressWarnings("deprecation")
     public CommentsAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
@@ -59,8 +59,8 @@ public class CommentsAdapter extends BaseAdapter {
     }
 
     public void setData(List<Comment> data) {
-        mData = CommentsAdapterList.from(data);
-        int size = mData.getItems().size();
+        mAdapterList = CommentsAdapterList.from(data);
+        int size = mAdapterList.getItems().size();
         if (size > 0) {
             mCommentsHeaderView.setText(mContext.getResources().getQuantityString(R.plurals.details_n_comments_text, size, size));
             mCommentsHeaderView.setEnabled(true);
@@ -77,12 +77,12 @@ public class CommentsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mCommentsHeaderView.isChecked() ? (mData.getItems().size() + 1) : 1;
+        return mCommentsHeaderView.isChecked() ? (mAdapterList.getItems().size() + 1) : 1;
     }
 
     @Override
     public CommentsAdapterListItem getItem(int position) {
-        return mData.getItems().get(position - 1);
+        return mAdapterList.getItems().get(position - 1);
     }
 
     @Override
@@ -126,6 +126,9 @@ public class CommentsAdapter extends BaseAdapter {
         TextView ratingTextView = (TextView) commentView.findViewById(R.id.txt_rating);
         View layoutBgView = commentView.findViewById(R.id.layout_bg);
         View topDivider = commentView.findViewById(R.id.top_divider);
+        CompoundButton showHideResponsesBtn = (CompoundButton) commentView.findViewById(R.id.btn_show_hide_responses);
+//        TextView responsesCountView = (TextView) commentView.findViewById(R.id.txt_responses_count);
+        View bottomDivider = commentView.findViewById(R.id.bottom_divider);
 
         if (comment.getVoteCount() >= 0) {
             layoutBgView.setBackgroundResource(R.drawable.comment_positive_bg);
@@ -133,6 +136,9 @@ public class CommentsAdapter extends BaseAdapter {
             commentTextView.setTextColor(mBlackColor);
             authorTextView.setTextColor(mGrayColor);
             dateTextView.setTextColor(mGrayColor);
+            bottomDivider.setBackgroundColor(mColorPrimaryPale);
+//            responsesCountView.setTextColor(mGrayColor);
+            showHideResponsesBtn.setTextColor(mGrayColor);
 
         } else {
             layoutBgView.setBackgroundResource(R.drawable.comment_negative_bg);
@@ -140,12 +146,33 @@ public class CommentsAdapter extends BaseAdapter {
             commentTextView.setTextColor(mGrayColor);
             authorTextView.setTextColor(mVeryLightGrayColor);
             dateTextView.setTextColor(mVeryLightGrayColor);
+            bottomDivider.setBackgroundColor(mVeryLightGrayColor);
+//            responsesCountView.setTextColor(mVeryLightGrayColor);
+            showHideResponsesBtn.setTextColor(mGrayColor);
         }
 
         authorTextView.setText(comment.getAuthorName());
         dateTextView.setText(DATE_TIME_FORMATTER.format(comment.getDate()));
         ratingTextView.setText(getPreparedRatingString(comment));
         initTextViewWithComment(comment, commentTextView);
+
+        if (adapterItem.getChildren().isEmpty()) {
+            bottomDivider.setVisibility(View.GONE);
+//            responsesCountView.setVisibility(View.GONE);
+            showHideResponsesBtn.setVisibility(View.GONE);
+            showHideResponsesBtn.setOnCheckedChangeListener(null);
+
+        } else {
+            bottomDivider.setVisibility(View.VISIBLE);
+//            responsesCountView.setVisibility(View.VISIBLE);
+            showHideResponsesBtn.setVisibility(View.VISIBLE);
+            showHideResponsesBtn.setChecked(adapterItem.isChildrenVisible());
+            showHideResponsesBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                adapterItem.setChildrenVisible(isChecked);
+                mAdapterList.rebuildList();
+                notifyDataSetChanged();
+            });
+        }
 
         commentView.setPadding(
                 Math.min(adapterItem.itemDepth * mCommentResponseShiftPixels, Math.round(parent.getWidth() * 0.3f)),
