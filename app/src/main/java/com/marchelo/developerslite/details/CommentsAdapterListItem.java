@@ -15,6 +15,7 @@ public class CommentsAdapterListItem {
     public final List<CommentsAdapterListItem> children;
     public final int itemDepth;
     public final Comment comment;
+    public boolean isChildrenVisible = true;
 
     CommentsAdapterListItem(Comment comment, CommentsAdapterListItem parent, int itemDepth) {
         this.parent = parent;
@@ -42,6 +43,14 @@ public class CommentsAdapterListItem {
         return itemDepth;
     }
 
+    public void setChildrenVisible(boolean isVisible) {
+        this.isChildrenVisible = isVisible;
+    }
+
+    public boolean isChildrenVisible() {
+        return isChildrenVisible;
+    }
+
     @SuppressWarnings("unused")
     public Comment getComment() {
         return comment;
@@ -53,7 +62,7 @@ public class CommentsAdapterListItem {
 
     /*package*/ void addAllItemHierarchy(List<CommentsAdapterListItem> resultList) {
         resultList.add(this);
-        if (children.isEmpty()) {
+        if (children.isEmpty() || !isChildrenVisible) {
             return;
         }
 
