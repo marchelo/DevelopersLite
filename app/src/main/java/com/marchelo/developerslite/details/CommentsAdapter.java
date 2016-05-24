@@ -1,6 +1,7 @@
 package com.marchelo.developerslite.details;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
@@ -62,9 +63,15 @@ public class CommentsAdapter extends BaseAdapter {
         int size = mData.getItems().size();
         if (size > 0) {
             mCommentsHeaderView.setText(mContext.getResources().getQuantityString(R.plurals.details_n_comments_text, size, size));
+            mCommentsHeaderView.setEnabled(true);
+            mCommentsHeaderView.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_comments_expand_selector, 0,
+                    R.drawable.ic_comments_expand_selector, 0);
 
         } else {
             mCommentsHeaderView.setText(R.string.details_no_comments_text);
+            mCommentsHeaderView.setEnabled(false);
+            mCommentsHeaderView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
     }
 
