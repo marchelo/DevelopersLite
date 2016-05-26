@@ -336,7 +336,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         playPause.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 progressBar.setVisibility(View.VISIBLE);
-
             }
         });
 
