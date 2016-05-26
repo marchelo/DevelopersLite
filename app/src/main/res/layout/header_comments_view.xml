@@ -8,4 +8,4 @@
     android:gravity="center"
     android:padding="10dp"
     android:enabled="false"
-    android:text="@string/details_no_comments_text"/>
+    android:text="@string/details_loading_comments_text"/>
