@@ -77,4 +77,5 @@
         <item quantity="many">%d коментарів</item>
         <item quantity="other">%d коментарів</item>
     </plurals>
+    <string name="details_loading_comments_text">Завантаження коментарів...</string>
 </resources>

@@ -84,6 +84,7 @@
     <string name="favorites_success_restoration_msg">Restored</string>
     <string name="favorites_failed_restoration_msg">Failed to restore deleted gifs</string>
     <string name="favorites_failed_deletion_msg">Failed to delete selected gifs from favorites</string>
+    <string name="details_loading_comments_text">Loading comments...</string>
     <string name="details_no_comments_text">No comments</string>
     <plurals name="details_n_comments_text">
         <item quantity="one">%d comment</item>
