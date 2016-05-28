@@ -74,8 +74,38 @@ public class CommentsAdapterList {
         mFullOrderedList = resultList;
     }
 
+    public ChangeInfo showChildrenAndRebuild(CommentsAdapterListItem item) {
+        item.setChildrenVisible(true);
+        int startPos = mFullOrderedList.indexOf(item) + 1;
+        int count = item.calculateChildCountToDeep();
+
+        rebuildList();
+
+        return new ChangeInfo(startPos, count);
+    }
+
+    public ChangeInfo hideChildrenAndRebuild(CommentsAdapterListItem item) {
+        item.setChildrenVisible(false);
+        int startPos = mFullOrderedList.indexOf(item) + 1;
+        int count = item.calculateChildCountToDeep();
+
+        rebuildList();
+
+        return new ChangeInfo(startPos, count);
+    }
+
     @NonNull
     public List<CommentsAdapterListItem> getItems() {
         return mFullOrderedList;
+    }
+
+    public static final class ChangeInfo {
+        public final int startPos;
+        public final int count;
+
+        public ChangeInfo(int startPos, int count) {
+            this.startPos = startPos;
+            this.count = count;
+        }
     }
 }

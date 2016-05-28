@@ -197,9 +197,13 @@ public class CommentsAdapter extends RecyclerView.Adapter {
                 showHideResponsesBtn.setVisibility(View.VISIBLE);
                 showHideResponsesBtn.setChecked(adapterItem.isChildrenVisible());
                 showHideResponsesBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    adapterItem.setChildrenVisible(isChecked);
-                    mAdapterList.rebuildList();
-                    notifyDataSetChanged();
+                    if (isChecked) {
+                        CommentsAdapterList.ChangeInfo changeInfo = mAdapterList.showChildrenAndRebuild(adapterItem);
+                        notifyItemRangeInserted(changeInfo.startPos + 1, changeInfo.count);
+                    } else {
+                        CommentsAdapterList.ChangeInfo changeInfo = mAdapterList.hideChildrenAndRebuild(adapterItem);
+                        notifyItemRangeRemoved(changeInfo.startPos + 1, changeInfo.count);
+                    }
                 });
             }
 
