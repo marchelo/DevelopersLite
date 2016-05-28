@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.view.SmartRecyclerView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * @author Oleg Green
@@ -24,12 +25,13 @@ public abstract class APostListFragment extends Fragment {
 
     protected QuickReturnScrollListener.ToolbarListener mListener;
 
-    @Bind(R.id.posts_list)
+    @BindView(R.id.posts_list)
     protected SmartRecyclerView mPostListView;
-    @Bind(R.id.swipe_layout)
+    @BindView(R.id.swipe_layout)
     protected SwipeRefreshLayout mSwipeLayout;
-    @Bind(R.id.empty_list_view)
+    @BindView(R.id.empty_list_view)
     protected View mEmptyView;
+    private Unbinder mUnBinder;
 
     @Override
     public void onAttach(Context context) {
@@ -46,7 +48,7 @@ public abstract class APostListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_list, container, false);
-        ButterKnife.bind(this, view);
+        mUnBinder = ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
             getActivity().setTitle(getArguments().getString(TITLE_TAG));
@@ -62,6 +64,6 @@ public abstract class APostListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnBinder.unbind();
     }
 }

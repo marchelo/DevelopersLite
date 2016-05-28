@@ -1,23 +1,20 @@
 package com.marchelo.developerslite.post_list;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.koushikdutta.async.future.Future;
 import com.marchelo.developerslite.DevLifeApplication;
+import com.marchelo.developerslite.details.APostViewHolder;
 import com.marchelo.developerslite.details.PostDetailsActivity;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.db.DbHelper;
@@ -26,66 +23,48 @@ import com.marchelo.developerslite.utils.ViewsTintConfig;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.utils.LoadGifImageReactor;
 import com.marchelo.developerslite.utils.PostViewHelper;
-import com.marchelo.developerslite.view.ExpandableTextView;
-import com.marchelo.developerslite.view.ImageShareToolbar;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.text.DateFormat;
 
-import butterknife.Bind;
 import butterknife.BindColor;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import pl.droidsonroids.gif.GifImageButton;
 
 /**
  * @author Oleg Green
  * @since 17.09.15
  */
-public class PostViewHolder extends RecyclerView.ViewHolder {
-    private static final int GIF_FUTURE_KEY = R.id.gif_future_key;
-    private static final int IMAGE_TARGET_KEY = R.id.image_target_key;
-
+public class PostViewHolder extends APostViewHolder {
+    protected LoadPreviewImageCallback mLoadImageCallback;
     private final DbHelper mDbHelper;
-    private final Handler mUiHandler;
-    private final Context mContext;
+    private Picasso mPicasso;
 
-    @Bind(R.id.gif_image)           GifImageButton gifImageView;
-    @Bind(R.id.tv_description)      ExpandableTextView descriptionView;
-    @Bind(R.id.tv_author)           TextView authorView;
-    @Bind(R.id.tv_rating)           TextView ratingView;
-    @Bind(R.id.tv_date)             TextView dateView;
-    @Bind(R.id.btn_play_pause)      CompoundButton playPause;
-    @Bind(R.id.progress_bar)        ProgressBar progressBar;
-    @Bind(R.id.btn_image_toolbar)   ImageShareToolbar imageToolbarView;
-    @Bind(R.id.view_load_fail)      View failToLoadView;
-    @Bind(R.id.btn_bookmark)        CompoundButton bookmarkBtn;
-    @Bind(R.id.btn_save_gif_link)   ImageButton mSaveLinkBtn;
-    @Bind(R.id.btn_share_post)      ImageButton mSharePostBtn;
-    @Bind(R.id.btn_share_post_link) ImageButton mSharePostLinkBtn;
-    @Bind(R.id.btn_details)         ImageButton mDetailsBtn;
+    @BindView(R.id.btn_bookmark)
+    protected CompoundButton bookmarkBtn;
+
+    @BindView(R.id.btn_share_post)
+    protected ImageButton mSharePostBtn;
+
+    @BindView(R.id.btn_share_post_link)
+    protected ImageButton mSharePostLinkBtn;
+
+    @BindView(R.id.btn_details)
+    protected ImageButton mDetailsBtn;
 
     @BindColor(R.color.colorPrimary) int mPrimaryColorValue;
 
-    private Post mPost;
-
     public PostViewHolder(View itemView, Handler uiHandler, DbHelper dbHelper) {
-        super(itemView);
-        ButterKnife.bind(this, itemView);
+        super(itemView, uiHandler);
 
         mDbHelper = dbHelper;
-        mContext = itemView.getContext();
-        mUiHandler = uiHandler;
+        mPicasso = Picasso.with(mContext);
 
         bookmarkBtn.setButtonDrawable(ViewsTintConfig.getTinted(mContext,
                 R.drawable.ic_bookmark_selector, R.color.bookmark_button_tint_selector));
-
-        mSaveLinkBtn.setImageDrawable(ViewsTintConfig.getTinted(mContext,
-                R.drawable.ic_favorite_white_selector, R.color.bookmark_button_tint_selector));
 
         mSharePostBtn.setColorFilter(mPrimaryColorValue);
         mSharePostLinkBtn.setColorFilter(mPrimaryColorValue);
@@ -93,9 +72,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindData(Post post) {
-        final boolean autoLoadGifs = DevLifeApplication.getInstance().isAutoLoadGifs();
-        Picasso picasso = Picasso.with(mContext);
         mPost = post;
+        mGifUriString = post.getGifURL();
 
         bookmarkBtn.setOnCheckedChangeListener(null);
         try {
@@ -106,10 +84,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
             e.printStackTrace();
         }
 
-        mSaveLinkBtn.setOnClickListener(null);
+        saveLinkGifView.setOnClickListener(null);
         try {
-            mSaveLinkBtn.setSelected(mDbHelper.getFavoriteByPostId(mPost.getPostId()) != null);
-            mSaveLinkBtn.setOnClickListener(new OnAddToFavoriteListener(mDbHelper, mPost));
+            saveLinkGifView.setSelected(mDbHelper.getFavoriteByPostId(mPost.getPostId()) != null);
+            saveLinkGifView.setOnClickListener(new OnAddToFavoriteListener(mDbHelper, mPost));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,7 +102,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         playPause.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
 
-                if (gifImageView.getTag(GIF_FUTURE_KEY) == null) {
+                if (mFutureRef == null) {
                     startGifLoading(post, true);
                 }
 
@@ -139,17 +117,13 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         gifImageView.setOnClickListener(null);
 
         //cancel gif loading task
-        //noinspection unchecked
-        WeakReference<Future> gifFuture = (WeakReference<Future>) gifImageView.getTag(GIF_FUTURE_KEY);
-        gifImageView.setTag(GIF_FUTURE_KEY, null);
-        if (gifFuture != null && gifFuture.get() != null && !gifFuture.get().isCancelled()) {
-            gifFuture.get().cancel();
+        if (mFutureRef != null && mFutureRef.get() != null && !mFutureRef.get().isCancelled()) {
+            mFutureRef.get().cancel();
         }
 
         //cancel image preview loading task
-        Target targetToCancel = (Target) gifImageView.getTag(IMAGE_TARGET_KEY);
-        if (gifFuture != null) {
-            picasso.cancelRequest(targetToCancel);
+        if (mLoadImageCallback != null) {
+            mPicasso.cancelRequest(mLoadImageCallback);
         }
 
         if (descriptionView.isDirty()) {
@@ -161,13 +135,13 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         dateView.setText(mContext.getString(R.string.post_item_date, DateFormat.getDateInstance().format(post.getDate())));
 
         //Load preview image
-        LoadPreviewImageCallback target = new LoadPreviewImageCallback(this);
-        gifImageView.setTag(IMAGE_TARGET_KEY, target);
+        mLoadImageCallback = new LoadPreviewImageCallback(this);
         //TODO resize image to avoid using extra big sizes
-        picasso.load(post.getPreviewURL())
-                .into(target);
+        mPicasso.load(post.getPreviewURL())
+                .into(mLoadImageCallback);
 
-        if (autoLoadGifs) {
+        mFutureRef = null;
+        if (DevLifeApplication.getInstance().isAutoLoadGifs()) {
             startGifLoading(post, false);
         }
     }
@@ -194,36 +168,11 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                     }
                 },
                 autoStart);
-        gifImageView.setTag(GIF_FUTURE_KEY, new WeakReference<>(future));
+        mFutureRef = new WeakReference<>(future);
     }
 
     private float getDrawableAspectRatio(Drawable drawable) {
         return (float) drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
-    }
-
-    @OnClick(R.id.btn_share_image_link)
-    protected void shareImageLink() {
-        PostViewHelper.shareImageLink(mContext, mPost.getGifURL());
-    }
-
-    @OnClick(R.id.btn_share_image)
-    protected void shareImage() {
-        PostViewHelper.shareImage(mContext, mPost.getGifURL());
-    }
-
-    @OnClick(R.id.btn_save_image)
-    protected void saveImage() {
-        PostViewHelper.saveImage(mContext, mPost);
-    }
-
-    @OnClick(R.id.btn_share_post)
-    protected void sharePost() {
-        PostViewHelper.sharePost(mContext, mPost);
-    }
-
-    @OnClick(R.id.btn_share_post_link)
-    protected void sharePostLink() {
-        PostViewHelper.sharePostLink(mContext, mPost.getPostId());
     }
 
     @OnClick(R.id.btn_save_gif_link)
@@ -240,21 +189,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                 authorView,
                 ratingView,
                 getDrawableAspectRatio(gifImageView.getDrawable()));
-    }
-
-    @OnLongClick(R.id.btn_share_image_link)
-    boolean showShareImageLinkHint() {
-        return PostViewHelper.showShareImageLinkHint(mContext);
-    }
-
-    @OnLongClick(R.id.btn_share_image)
-    boolean showShareImageHint() {
-        return PostViewHelper.showShareImageHint(mContext);
-    }
-
-    @OnLongClick(R.id.btn_save_image)
-    boolean showSaveImageHint() {
-        return PostViewHelper.showSaveImageHint(mContext);
     }
 
     @OnLongClick(R.id.btn_share_post)
@@ -281,6 +215,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         return true;
     }
 
+
+
+
+    ////////
     private static class OnBookmarkedListener implements CompoundButton.OnCheckedChangeListener {
 
         private final Dao<Post, Long> mPostDao;

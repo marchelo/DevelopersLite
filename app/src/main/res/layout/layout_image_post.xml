@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
-    tools:showIn="@layout/activity_post_details">
+    tools:showIn="@layout/layout_desc_n_image_post">
 
     <include
         layout="@layout/layout_image_and_controls" />

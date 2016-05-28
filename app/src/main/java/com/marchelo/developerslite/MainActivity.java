@@ -46,7 +46,7 @@ import com.marchelo.developerslite.post_list.SearchPostsFragment;
 import com.marchelo.developerslite.utils.IntentHelper;
 import com.marchelo.developerslite.utils.StorageUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -60,34 +60,34 @@ public class MainActivity extends AppCompatActivity
     private static final String BOOKMARK_FRAGMENT_TAG = "BOOKMARK_FRAGMENT";
 
     @Nullable
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @Bind(R.id.navigation_view)
+    @BindView(R.id.navigation_view)
     NavigationView mNavigationView;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.toolbar_stub_home_icon)
+    @BindView(R.id.toolbar_stub_home_icon)
     View mToolbarStubIcon;
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView mTitle;
 
-    @Bind(R.id.toolbar_spinner)
+    @BindView(R.id.toolbar_spinner)
     Spinner mToolbarSpinner;
 
-    @Bind(R.id.toolbar_search)
+    @BindView(R.id.toolbar_search)
     View mSearchLayout;
 
-    @Bind(R.id.txt_toolbar_search)
+    @BindView(R.id.txt_toolbar_search)
     EditText mSearchView;
 
-    @Bind(R.id.icon_toolbar_search)
+    @BindView(R.id.icon_toolbar_search)
     ImageView mSearchViewIcon;
 
-    @Bind(R.id.btn_toolbar_search_clear)
+    @BindView(R.id.btn_toolbar_search_clear)
     ImageButton mClearSearchView;
 
     ActionBarDrawerToggle mDrawerToggle;
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
 
+        mToolbar.canShowOverflowMenu();
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         //noinspection ConstantConditions

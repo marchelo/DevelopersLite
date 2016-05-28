@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 
 import com.marchelo.developerslite.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -21,8 +21,8 @@ public class GifAndTextContainer extends FrameLayout implements ImageContainer {
     private static final String TAG = GifAndTextContainer.class.getSimpleName();
     private final ImageContainerDelegate icDelegate = new ImageContainerDelegate();
 
-    @Bind(R.id.tv_description) ExpandableTextView mExpandableTextView;
-    @Bind(R.id.gif_container) ImageContainer mImageContainer;
+    @BindView(R.id.tv_description) ExpandableTextView mExpandableTextView;
+    @BindView(R.id.gif_container) ImageContainer mImageContainer;
 
     public GifAndTextContainer(Context context) {
         super(context);

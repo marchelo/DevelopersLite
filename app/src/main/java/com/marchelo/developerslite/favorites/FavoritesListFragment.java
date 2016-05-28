@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
@@ -47,10 +47,10 @@ import butterknife.OnItemClick;
 public class FavoritesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Favorite>> {
     private static final String TAG = FavoritesListFragment.class.getSimpleName();
 
-    @Bind(R.id.favorites_list)
+    @BindView(R.id.favorites_list)
     protected GridView mFavoritesListView;
 
-    @Bind(R.id.favorites_list_empty_view)
+    @BindView(R.id.favorites_list_empty_view)
     protected TextView mEmptyView;
 
     @Override
