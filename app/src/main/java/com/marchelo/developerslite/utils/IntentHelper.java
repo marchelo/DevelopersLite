@@ -105,21 +105,21 @@ public final class IntentHelper {
         return targetIntents;
     }
 
-    public static void sendIntentWithoutApp(Activity activity, Intent sourceIntent, @StringRes int StringId) {
-        Log.d(TAG, "sendIntentWithoutApp(), source intent = " + sourceIntent);
+    public static void sendIntentExcludingThisApp(Activity activity, Intent sourceIntent, @StringRes int StringId) {
+        Log.d(TAG, "sendIntentExcludingThisApp(), source intent = " + sourceIntent);
 
         Intent intent = new Intent(sourceIntent);
         intent.setComponent(null);
-        Log.d(TAG, "sendIntentWithoutApp(), new intent = " + intent);
+        Log.d(TAG, "sendIntentExcludingThisApp(), new intent = " + intent);
 
         String appCantShowLink = activity.getString(StringId, activity.getString(R.string.app_name));
 
         if (IntentHelper.openForIntentExcludeSelf(activity, intent, appCantShowLink)) {
-            Log.d(TAG, "sendIntentWithoutApp(), found apps to handle intent");
+            Log.d(TAG, "sendIntentExcludingThisApp(), found apps to handle intent");
             activity.finish();
 
         } else {
-            Log.d(TAG, "sendIntentWithoutApp(), no appropriate app found to handle intent");
+            Log.d(TAG, "sendIntentExcludingThisApp(), no appropriate app found to handle intent");
             new AlertDialog.Builder(activity)
                     .setCancelable(false)
                     .setMessage(appCantShowLink)

@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import com.marchelo.developerslite.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -17,11 +17,12 @@ import butterknife.ButterKnife;
 public class ImageShareToolbar extends LinearLayout {
 
     public static final int ANIMATION_DURATION = 300;
-    @Bind(R.id.btn_share_image)
+    @BindView(R.id.btn_share_image)
     View shareImageButton;
 
-    @Bind(R.id.btn_save_image)
+    @BindView(R.id.btn_save_image)
     View saveImageButton;
+
     private float mTranslationDelta;
 
     public ImageShareToolbar(Context context) {

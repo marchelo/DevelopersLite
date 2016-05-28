@@ -18,7 +18,7 @@ import com.marchelo.developerslite.model.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import icepick.Icepick;
@@ -128,11 +128,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.progress)
+        @BindView(R.id.progress)
         ProgressBar progressBar;
-        @Bind(R.id.tv_message)
+        @BindView(R.id.tv_message)
         TextView messageView;
-        @Bind(R.id.btn_try_again)
+        @BindView(R.id.btn_try_again)
         View tryAgainView;
 
         private final OnTryAgainListener mListener;

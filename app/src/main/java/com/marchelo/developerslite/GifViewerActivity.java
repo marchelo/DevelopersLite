@@ -24,17 +24,16 @@ public class GifViewerActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gif_viewer);
-        mGifImageHolder = new GifImageHolder(this, new Handler(), findViewById(R.id.gif_viewer_container));
+        mGifImageHolder = new GifImageHolder(findViewById(R.id.gif_viewer_container), new Handler());
 
         Uri gifUri = getIntent().getData();
         Log.d(TAG, "onCreate(), gifUri = " + gifUri);
 
         if (verifyGifImage(gifUri)) {
-            mGifImageHolder.update(gifUri);
             mGifImageHolder.loadGifImage(gifUri);
 
         } else {
-            IntentHelper.sendIntentWithoutApp(this, getIntent(), R.string.activity_gif_viewer_cannot_open_link);
+            IntentHelper.sendIntentExcludingThisApp(this, getIntent(), R.string.activity_gif_viewer_cannot_open_link);
         }
     }
 
