@@ -11,13 +11,14 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.marchelo.developerslite.BuildConfig;
@@ -25,6 +26,7 @@ import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.network.ApiFactory;
 import com.marchelo.developerslite.utils.IntentHelper;
+import com.marchelo.developerslite.view.DividerItemDecorator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +58,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     TextView mTitle;
 
     @BindView(R.id.list_view_post_details)
-    ListView mPostDetailsListView;
+    RecyclerView mPostDetailsListView;
 
     @State Post mPost;
 
@@ -95,12 +97,15 @@ public class PostDetailsActivity extends AppCompatActivity {
 
         Icepick.restoreInstanceState(this, savedInstanceState);
 
-        View headerView = LayoutInflater.from(this).inflate(R.layout.header_view_post_details, null);
-//        mPostDetailsListView.addHeaderView(headerView, null, false);
+        mPostDetailsListView.setLayoutManager(new LinearLayoutManager(this));
+        mPostDetailsListView.setHasFixedSize(false);
+        int dividerHeight = getResources().getDimensionPixelSize(R.dimen.detailed_list_dividerHeight);
+        mPostDetailsListView.addItemDecoration(new DividerItemDecorator(dividerHeight));
 
-        mCommentsAdapter = new CommentsAdapter(this, headerView);
-        mPostDetailsListView.setAdapter(mCommentsAdapter);
+        View headerView = LayoutInflater.from(this).inflate(R.layout.header_view_post_details, mPostDetailsListView, false);
         mHeaderViewHolder = new PostDetailsViewHolder(headerView, new Handler(), getIntent().getFloatExtra(IMAGE_RATIO_TAG, 1));
+        mCommentsAdapter = new CommentsAdapter(this, mHeaderViewHolder);
+        mPostDetailsListView.setAdapter(mCommentsAdapter);
 
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();

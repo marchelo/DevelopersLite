@@ -188,7 +188,7 @@ public class ApiFactory {
                 try {
                     return new SimpleDateFormat(format, Locale.US).parse(jsonElement.getAsString());
                 } catch (ParseException e) {
-                    Log.d("test2", "deserialize: ", e);
+                    Log.d("deserialize", "deserialize: ", e);
                 }
             }
             throw new JsonParseException("Unparseable date: \"" + jsonElement.getAsString()
