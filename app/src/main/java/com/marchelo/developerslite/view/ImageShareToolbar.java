@@ -49,6 +49,10 @@ public class ImageShareToolbar extends LinearLayout {
         animate().translationX(0);
     }
 
+    public void hideWithoutAnimation() {
+        setTranslationX(mTranslationDelta);
+    }
+
     public void hide() {
         animate().translationX(mTranslationDelta);
     }
