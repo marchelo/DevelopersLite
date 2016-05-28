@@ -6,12 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.j256.ormlite.dao.Dao;
 import com.koushikdutta.async.future.Future;
 import com.marchelo.developerslite.DevLifeApplication;
 import com.marchelo.developerslite.details.APostViewHolder;
@@ -33,6 +33,8 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * @author Oleg Green
@@ -40,6 +42,8 @@ import butterknife.OnLongClick;
  */
 public class PostViewHolder extends APostViewHolder {
     protected LoadPreviewImageCallback mLoadImageCallback;
+    protected CompositeSubscription mSubscriptions;
+
     private final DbHelper mDbHelper;
     private Picasso mPicasso;
 
@@ -69,19 +73,41 @@ public class PostViewHolder extends APostViewHolder {
         mSharePostBtn.setColorFilter(mPrimaryColorValue);
         mSharePostLinkBtn.setColorFilter(mPrimaryColorValue);
         mDetailsBtn.setColorFilter(mPrimaryColorValue);
+
+        itemView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if (mSubscriptions != null) {
+                    mSubscriptions.unsubscribe();
+                    mSubscriptions = null;
+                }
+            }
+        });
     }
 
     public void bindData(Post post) {
         mPost = post;
         mGifUriString = post.getGifURL();
 
-        bookmarkBtn.setOnCheckedChangeListener(null);
-        try {
-            bookmarkBtn.setChecked(mDbHelper.getPostById(mPost.getPostId()) != null);
-            bookmarkBtn.setOnCheckedChangeListener(new OnBookmarkedListener(mDbHelper, mPost));
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (mSubscriptions != null) {
+            mSubscriptions.unsubscribe();
         }
+        mSubscriptions = new CompositeSubscription();
+
+        bookmarkBtn.setOnCheckedChangeListener(null);
+        mSubscriptions.add(
+                mDbHelper.getPostByPostIdAsync(mPost.getPostId())
+                        .subscribe(
+                                post1 -> {
+                                    bookmarkBtn.setChecked(post1 != null);
+                                    bookmarkBtn.setOnCheckedChangeListener(
+                                            new OnBookmarkedListener(mSubscriptions, mDbHelper, mPost));
+                                }));
 
         saveLinkGifView.setOnClickListener(null);
         try {
@@ -220,29 +246,40 @@ public class PostViewHolder extends APostViewHolder {
     ////////
     private static class OnBookmarkedListener implements CompoundButton.OnCheckedChangeListener {
 
+        private final CompositeSubscription mGlobalSubscriptions;
         private final DbHelper mDbHelper;
         private final Post mCurrentPost;
 
-        public OnBookmarkedListener(DbHelper dbHelper, Post post) {
+        private CompositeSubscription mLocalSubscriptions;
+
+        public OnBookmarkedListener(CompositeSubscription subscriptions, DbHelper dbHelper, Post post) {
+            mGlobalSubscriptions = subscriptions;
             mDbHelper = dbHelper;
             mCurrentPost = post;
         }
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            try {
+            if (mLocalSubscriptions != null) {
+                mLocalSubscriptions.unsubscribe();
+            }
+            mLocalSubscriptions = new CompositeSubscription();
 
-                Post foundPost = mDbHelper.getPostById(mCurrentPost.getPostId());
+            if (isChecked) {
+                Subscription addIfAbsentSubscription = mDbHelper.addPostIfAbsentAsync(mCurrentPost)
+                        .subscribe(aBoolean -> {
+                            Log.d("test2", "onCheckedChanged: addPostIfAbsentAsync: result = " + aBoolean);
+                        });
+                mGlobalSubscriptions.add(addIfAbsentSubscription);
+                mLocalSubscriptions.add(addIfAbsentSubscription);
 
-                if (isChecked && foundPost == null) {
-                    mDbHelper.addPost(mCurrentPost);
-
-                } else if (foundPost != null) {
-                    mDbHelper.deletePostById(foundPost.getId());
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } else {
+                Subscription deleteIfPresentSubscription = mDbHelper.deletePostByPostIdIfPresentAsync(mCurrentPost.getPostId())
+                        .subscribe(aBoolean -> {
+                            Log.d("test2", "onCheckedChanged: deletePostByPostIdIfPresentAsync: result = " + aBoolean);
+                        });
+                mGlobalSubscriptions.add(deleteIfPresentSubscription);
+                mLocalSubscriptions.add(deleteIfPresentSubscription);
             }
         }
     }
