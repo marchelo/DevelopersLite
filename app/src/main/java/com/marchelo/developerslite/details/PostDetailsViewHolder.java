@@ -41,6 +41,7 @@ public class PostDetailsViewHolder extends APostViewHolder {
     public void loadPostImage(Post post) {
         mPost = post;
         mGifUriString = post.getGifURL();
+        imageToolbarView.setVisibility(View.GONE);
 
         PostViewHelper.initCommonViews(descriptionView, authorView, ratingView, post);
         dateView.setText(DATE_TIME_FORMATTER.format(post.getDate()));
@@ -48,6 +49,10 @@ public class PostDetailsViewHolder extends APostViewHolder {
         playPause.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 progressBar.setVisibility(View.VISIBLE);
+                imageToolbarView.hide();
+
+            } else {
+                imageToolbarView.show();
             }
         });
 

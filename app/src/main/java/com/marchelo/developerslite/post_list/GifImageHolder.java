@@ -122,7 +122,6 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
         mGifUriString = gifUri.toString();
         refreshShareImageLinkButtonVisibility(gifUri);
 
-        saveLinkGifView.setVisibility(View.GONE);
         imageToolbarView.hide();
         imageToolbarView.imageUnavailable();
         playPause.setOnCheckedChangeListener((buttonView, isChecked) -> {
