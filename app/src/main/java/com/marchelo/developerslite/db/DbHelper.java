@@ -69,23 +69,22 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    //TODO make it private
-    public Dao<Post, Long> getPostDao() throws SQLException {
-        if(postDao == null) {
-            postDao = getDao(Post.class);
-        }
-        return postDao;
+    public int addPost(Post post) throws SQLException {
+        return getPostDao().create(post);
+    }
+
+    public Post getPostById(long postId) throws SQLException {
+        return getPostDao().queryBuilder()
+                .where().eq(Post.Column.POST_ID, postId)
+                .queryForFirst();
+    }
+
+    public int deletePostById(long postId) throws SQLException {
+        return getPostDao().deleteById(postId);
     }
 
     public List<Post> getAllPosts() throws SQLException {
         return getPostDao().queryBuilder().orderBy(Post.Column.ID, false).query();
-    }
-
-    private Dao<Favorite, Long> getFavoriteDao() throws SQLException {
-        if(favoriteDao == null) {
-            favoriteDao = getDao(Favorite.class);
-        }
-        return favoriteDao;
     }
 
     public List<Favorite> getAllFavorites() throws SQLException {
@@ -123,5 +122,19 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return getFavoriteDao().queryBuilder()
                 .where().eq(Favorite.Column.POST_ID, postId)
                 .queryForFirst();
+    }
+
+    private Dao<Post, Long> getPostDao() throws SQLException {
+        if(postDao == null) {
+            postDao = getDao(Post.class);
+        }
+        return postDao;
+    }
+
+    private Dao<Favorite, Long> getFavoriteDao() throws SQLException {
+        if(favoriteDao == null) {
+            favoriteDao = getDao(Favorite.class);
+        }
+        return favoriteDao;
     }
 }

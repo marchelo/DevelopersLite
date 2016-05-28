@@ -77,9 +77,8 @@ public class PostViewHolder extends APostViewHolder {
 
         bookmarkBtn.setOnCheckedChangeListener(null);
         try {
-            Dao<Post, Long> postDao = mDbHelper.getPostDao();
-            bookmarkBtn.setChecked(!postDao.queryForEq(Post.Column.POST_ID, mPost.getPostId()).isEmpty());
-            bookmarkBtn.setOnCheckedChangeListener(new OnBookmarkedListener(postDao, mPost));
+            bookmarkBtn.setChecked(mDbHelper.getPostById(mPost.getPostId()) != null);
+            bookmarkBtn.setOnCheckedChangeListener(new OnBookmarkedListener(mDbHelper, mPost));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -221,11 +220,11 @@ public class PostViewHolder extends APostViewHolder {
     ////////
     private static class OnBookmarkedListener implements CompoundButton.OnCheckedChangeListener {
 
-        private final Dao<Post, Long> mPostDao;
+        private final DbHelper mDbHelper;
         private final Post mCurrentPost;
 
-        public OnBookmarkedListener(Dao<Post, Long> postDao, Post post) {
-            mPostDao = postDao;
+        public OnBookmarkedListener(DbHelper dbHelper, Post post) {
+            mDbHelper = dbHelper;
             mCurrentPost = post;
         }
 
@@ -233,15 +232,13 @@ public class PostViewHolder extends APostViewHolder {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             try {
 
-                Post foundPost = mPostDao.queryBuilder()
-                        .where().eq(Post.Column.POST_ID, mCurrentPost.getPostId())
-                        .queryForFirst();
+                Post foundPost = mDbHelper.getPostById(mCurrentPost.getPostId());
 
                 if (isChecked && foundPost == null) {
-                    mPostDao.create(mCurrentPost);
+                    mDbHelper.addPost(mCurrentPost);
 
                 } else if (foundPost != null) {
-                    mPostDao.deleteById(foundPost.getId());
+                    mDbHelper.deletePostById(foundPost.getId());
                 }
 
             } catch (SQLException e) {

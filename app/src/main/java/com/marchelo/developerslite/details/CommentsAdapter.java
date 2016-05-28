@@ -59,7 +59,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
             StorageUtils.setExpandCommentsEnabled(context, isChecked);
 
             int commentsCount = mAdapterList.getItems().size();
-            if (commentsCount > 1) {
+            if (commentsCount > 0) {
                 if (isChecked) {
                     notifyItemRangeInserted(1, commentsCount);
                 } else {
