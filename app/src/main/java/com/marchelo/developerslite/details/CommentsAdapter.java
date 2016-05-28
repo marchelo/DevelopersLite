@@ -33,6 +33,7 @@ public class CommentsAdapter extends BaseAdapter {
     private final int mCommentResponseShiftPixels;
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
+    private final View mHeaderView;
 
     private CommentsAdapterList mAdapterList = new CommentsAdapterList();
     private int mVeryLightGrayColor;
@@ -41,11 +42,12 @@ public class CommentsAdapter extends BaseAdapter {
     private int mBlackColor;
 
     @SuppressWarnings("deprecation")
-    public CommentsAdapter(Context context) {
+    public CommentsAdapter(Context context, View headerView) {
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
         mCommentResponseShiftPixels = context.getResources().getDimensionPixelSize(R.dimen.comments_list_response_shift);
-        mCommentsHeaderView = (CompoundButton) mLayoutInflater.inflate(R.layout.header_comments_view, null);
+        mHeaderView = headerView;
+        mCommentsHeaderView = (CompoundButton) headerView.findViewById(R.id.header_comments_view);
         mCommentsHeaderView.setChecked(StorageUtils.isExpandCommentsEnabled(context));
         mCommentsHeaderView.setOnCheckedChangeListener((buttonView, isChecked) -> {
             StorageUtils.setExpandCommentsEnabled(context, isChecked);
@@ -107,7 +109,7 @@ public class CommentsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == 0) {
-            return mCommentsHeaderView;
+            return mHeaderView;
         }
 
         CommentsAdapterListItem adapterItem = getItem(position);
