@@ -31,7 +31,10 @@ import butterknife.ButterKnife;
  * @since 15.05.16
  */
 public class CommentsAdapter extends RecyclerView.Adapter {
-    public final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
+    private static final int HEADER_VIEW_TYPE = 0;
+    private static final int COMMENT_VIEW_TYPE = 1;
+
+    private final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
     private final CompoundButton mCommentsHeaderView;
     private final int mCommentResponseShiftPixels;
     private final LayoutInflater mLayoutInflater;
@@ -48,9 +51,9 @@ public class CommentsAdapter extends RecyclerView.Adapter {
     public CommentsAdapter(Context context, PostDetailsViewHolder detailsViewHolder) {
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
-        mCommentResponseShiftPixels = context.getResources().getDimensionPixelSize(R.dimen.comments_list_response_shift);
         mDetailsViewHolder = detailsViewHolder;
-        mCommentsHeaderView = (CompoundButton) detailsViewHolder.itemView.findViewById(R.id.header_comments_view);
+
+        mCommentsHeaderView = detailsViewHolder.commentsHeaderView;
         mCommentsHeaderView.setChecked(StorageUtils.isExpandCommentsEnabled(context));
         mCommentsHeaderView.setOnCheckedChangeListener((buttonView, isChecked) -> {
             StorageUtils.setExpandCommentsEnabled(context, isChecked);
@@ -64,6 +67,8 @@ public class CommentsAdapter extends RecyclerView.Adapter {
                 }
             }
         });
+
+        mCommentResponseShiftPixels = context.getResources().getDimensionPixelSize(R.dimen.comments_list_response_shift);
 
         mVeryLightGrayColor = mContext.getResources().getColor(R.color.very_light_gray_color);
         mColorPrimaryPale = mContext.getResources().getColor(R.color.colorPrimaryPale);
@@ -95,7 +100,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == 0) {
+        if (viewType == HEADER_VIEW_TYPE) {
             return mDetailsViewHolder;
         }
         return new CommentViewHolder(parent, mLayoutInflater.inflate(R.layout.item_view_comment, parent, false));
@@ -113,9 +118,9 @@ public class CommentsAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return 0;
+            return HEADER_VIEW_TYPE;
         } else {
-            return 1;
+            return COMMENT_VIEW_TYPE;
         }
     }
 
@@ -166,7 +171,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
                 authorTextView.setTextColor(mGrayColor);
                 dateTextView.setTextColor(mGrayColor);
                 bottomDivider.setBackgroundColor(mColorPrimaryPale);
-//                  responsesCountView.setTextColor(mGrayColor);
+//                responsesCountView.setTextColor(mGrayColor);
                 showHideResponsesBtn.setTextColor(mGrayColor);
 
             } else {
@@ -176,7 +181,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
                 authorTextView.setTextColor(mVeryLightGrayColor);
                 dateTextView.setTextColor(mVeryLightGrayColor);
                 bottomDivider.setBackgroundColor(mVeryLightGrayColor);
-//                  responsesCountView.setTextColor(mVeryLightGrayColor);
+//                responsesCountView.setTextColor(mVeryLightGrayColor);
                 showHideResponsesBtn.setTextColor(mGrayColor);
             }
 
@@ -188,12 +193,12 @@ public class CommentsAdapter extends RecyclerView.Adapter {
 
             if (adapterItem.getChildren().isEmpty()) {
                 bottomDivider.setVisibility(View.GONE);
-//                  responsesCountView.setVisibility(View.GONE);
+//                responsesCountView.setVisibility(View.GONE);
                 showHideResponsesBtn.setVisibility(View.GONE);
 
             } else {
                 bottomDivider.setVisibility(View.VISIBLE);
-//                  responsesCountView.setVisibility(View.VISIBLE);
+//                responsesCountView.setVisibility(View.VISIBLE);
                 showHideResponsesBtn.setVisibility(View.VISIBLE);
                 showHideResponsesBtn.setChecked(adapterItem.isChildrenVisible());
                 showHideResponsesBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -244,7 +249,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
                 textView.setText("");
 
             } else {
-                Spanned spanned = Html.fromHtml(commentText, null, null);
+                Spanned spanned = Html.fromHtml(commentText);
                 textView.setText(HtmlImproveHelper.replaceImageSpansWithPlainText(spanned));
 
                 LinkifyModified.addLinks(textView);
