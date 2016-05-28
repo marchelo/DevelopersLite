@@ -47,6 +47,18 @@ public class CommentsAdapterListItem {
         this.isChildrenVisible = isVisible;
     }
 
+    public int calculateChildCountToDeep() {
+        if (children == null || children.isEmpty()) {
+            return 0;
+        }
+
+        int result = children.size();
+        for (CommentsAdapterListItem item : children) {
+            result += item.calculateChildCountToDeep();
+        }
+        return result;
+    }
+
     public boolean isChildrenVisible() {
         return isChildrenVisible;
     }
