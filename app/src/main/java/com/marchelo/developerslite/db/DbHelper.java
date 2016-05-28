@@ -2,6 +2,7 @@ package com.marchelo.developerslite.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -14,13 +15,19 @@ import com.marchelo.developerslite.model.Post;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Oleg Green
  * @since 17.01.16
  */
 public class DbHelper extends OrmLiteSqliteOpenHelper {
-
+    private static final String TAG = DbHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "database";
     private static final int DATABASE_VERSION = 1;
 
@@ -73,7 +80,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         return getPostDao().create(post);
     }
 
-    public Post getPostById(long postId) throws SQLException {
+    public Post getPostByPostId(long postId) throws SQLException {
         return getPostDao().queryBuilder()
                 .where().eq(Post.Column.POST_ID, postId)
                 .queryForFirst();
@@ -85,6 +92,31 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     public List<Post> getAllPosts() throws SQLException {
         return getPostDao().queryBuilder().orderBy(Post.Column.ID, false).query();
+    }
+
+    public Observable<Boolean> addPostIfAbsentAsync(Post post) {
+        return makeSimpleDbObservable(() -> {
+            if (getPostByPostId(post.getPostId()) != null) {
+                return false;
+            }
+            addPost(post);
+            return true;
+        });
+    }
+
+    public Observable<Boolean> deletePostByPostIdIfPresentAsync(long postId) {
+        return makeSimpleDbObservable(() -> {
+            Post post = getPostByPostId(postId);
+            if (post == null) {
+                return false;
+            }
+            deletePostById(post.getId());
+            return true;
+        });
+    }
+
+    public Observable<Post> getPostByPostIdAsync(long postId) {
+        return makeSimpleDbObservable(() -> DbHelper.this.getPostByPostId(postId));
     }
 
     public List<Favorite> getAllFavorites() throws SQLException {
@@ -136,5 +168,33 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
             favoriteDao = getDao(Favorite.class);
         }
         return favoriteDao;
+    }
+
+    private static <T> Observable<T> makeSimpleDbObservable(final Callable<T> func) {
+        return Observable.create(
+                new Observable.OnSubscribe<T>() {
+                    @Override
+                    public void call(Subscriber<? super T> subscriber) {
+                        if (subscriber.isUnsubscribed()) {
+                            return;
+                        }
+                        try {
+//                            try {
+//                                Thread.sleep(1000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+
+                            subscriber.onNext(func.call());
+                            subscriber.onCompleted();
+
+                        } catch (Exception e) {
+                            Log.d(TAG, "call: ", e);
+                            subscriber.onError(e);
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }
