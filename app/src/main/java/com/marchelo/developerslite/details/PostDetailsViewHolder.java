@@ -3,6 +3,7 @@ package com.marchelo.developerslite.details;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.koushikdutta.async.future.Future;
 import com.marchelo.developerslite.R;
@@ -27,6 +28,10 @@ public class PostDetailsViewHolder extends APostViewHolder {
 
     @BindView(R.id.image_container)
     protected ImageContainer imageContainer;
+
+    @BindView(R.id.header_comments_view)
+    public CompoundButton commentsHeaderView;
+
 
     public PostDetailsViewHolder(View itemView, Handler handler, float aspectRatio) {
         super(itemView, handler);
