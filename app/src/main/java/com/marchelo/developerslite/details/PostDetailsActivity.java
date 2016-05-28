@@ -41,12 +41,12 @@ import rx.subscriptions.CompositeSubscription;
 public class PostDetailsActivity extends AppCompatActivity {
     private static final String TAG = PostDetailsActivity.class.getSimpleName();
     private static final String POST_TO_SHOW_TAG = "POST_TO_SHOW";
-    public static final String IMAGE_RATIO_TAG = "ratio";
+    private static final String IMAGE_RATIO_TAG = "IMAGE_RATIO";
 
     private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();
     private final ApiFactory.ApiPostById mApi = ApiFactory.postByIdApi();
 
-    private PostDetailsViewHolder mViewHolder;
+    private PostDetailsViewHolder mHeaderViewHolder;
     private CommentsAdapter mCommentsAdapter;
 
     @BindView(R.id.toolbar)
@@ -96,12 +96,11 @@ public class PostDetailsActivity extends AppCompatActivity {
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         View headerView = LayoutInflater.from(this).inflate(R.layout.header_view_post_details, null);
-        mPostDetailsListView.addHeaderView(headerView, null, false);
+//        mPostDetailsListView.addHeaderView(headerView, null, false);
 
-        mCommentsAdapter = new CommentsAdapter(this);
+        mCommentsAdapter = new CommentsAdapter(this, headerView);
         mPostDetailsListView.setAdapter(mCommentsAdapter);
-        mViewHolder = new PostDetailsViewHolder(headerView, new Handler());
-        mViewHolder.configureImageContainerSize(getIntent().getFloatExtra(IMAGE_RATIO_TAG, 1));
+        mHeaderViewHolder = new PostDetailsViewHolder(headerView, new Handler(), getIntent().getFloatExtra(IMAGE_RATIO_TAG, 1));
 
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -171,15 +170,15 @@ public class PostDetailsActivity extends AppCompatActivity {
                 break;
 
             case R.id.details_menu_share_post_link:
-                mViewHolder.sharePostLink();
+                mHeaderViewHolder.sharePostLink();
                 break;
 
             case R.id.details_menu_share_post:
-                mViewHolder.sharePost();
+                mHeaderViewHolder.sharePost();
                 break;
 
             case R.id.details_menu_open_in_browser:
-                mViewHolder.openInBrowser();
+                mHeaderViewHolder.openInBrowser();
                 break;
 
             case R.id.details_menu_bookmark_post:
@@ -205,7 +204,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mCompositeSubscription.unsubscribe();
-        mViewHolder.release();
+        mHeaderViewHolder.release();
     }
 
     private void loadPost(long postId) {
@@ -232,7 +231,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                             mCommentsAdapter.notifyDataSetChanged();
                         }));
 
-        mViewHolder.loadPostImage(mPost);
+        mHeaderViewHolder.loadPostImage(mPost);
 
         if (BuildConfig.DEBUG) {
             appendPostIdToTitle();

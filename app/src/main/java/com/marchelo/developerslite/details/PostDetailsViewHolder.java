@@ -28,8 +28,9 @@ public class PostDetailsViewHolder extends APostViewHolder {
     @BindView(R.id.image_container)
     protected ImageContainer imageContainer;
 
-    public PostDetailsViewHolder(View itemView, Handler handler) {
+    public PostDetailsViewHolder(View itemView, Handler handler, float aspectRatio) {
         super(itemView, handler);
+        configureImageContainerSize(aspectRatio);
     }
 
     public void loadPostImage(Post post) {
