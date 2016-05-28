@@ -30,4 +30,5 @@
 
     <dimen name="favorites_list_divider">2dp</dimen>
     <dimen name="comments_list_response_shift">10dp</dimen>
+    <dimen name="detailed_list_dividerHeight">7dp</dimen>
 </resources>
