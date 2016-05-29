@@ -76,22 +76,13 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public int addPost(Post post) throws SQLException {
-        return getPostDao().create(post);
-    }
-
-    public Post getPostByPostId(long postId) throws SQLException {
-        return getPostDao().queryBuilder()
-                .where().eq(Post.Column.POST_ID, postId)
-                .queryForFirst();
-    }
-
-    public int deletePostById(long postId) throws SQLException {
-        return getPostDao().deleteById(postId);
-    }
-
+    //used in loader
     public List<Post> getAllPosts() throws SQLException {
         return getPostDao().queryBuilder().orderBy(Post.Column.ID, false).query();
+    }
+
+    public Observable<Post> getPostByPostIdAsync(long postId) {
+        return makeSimpleDbObservable(() -> DbHelper.this.getPostByPostId(postId));
     }
 
     public Observable<Boolean> addPostIfAbsentAsync(Post post) {
@@ -104,9 +95,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         });
     }
 
-    public Observable<Boolean> deletePostByPostIdIfPresentAsync(long postId) {
+    public Observable<Boolean> deletePostIfPresentAsync(Post postToDelete) {
         return makeSimpleDbObservable(() -> {
-            Post post = getPostByPostId(postId);
+            Post post = getPostByPostId(postToDelete.getPostId());
             if (post == null) {
                 return false;
             }
@@ -115,27 +106,79 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         });
     }
 
-    public Observable<Post> getPostByPostIdAsync(long postId) {
-        return makeSimpleDbObservable(() -> DbHelper.this.getPostByPostId(postId));
-    }
-
+    //used in loader
     public List<Favorite> getAllFavorites() throws SQLException {
         return getFavoriteDao().queryBuilder().orderBy(Favorite.Column.ID, false).query();
     }
 
-    public void deleteFavorite(Favorite favoriteToDelete) throws SQLException {
-        getFavoriteDao().delete(favoriteToDelete);
+    public Observable<Favorite> getFavoriteByPostIdAsync(long postId) {
+        return makeSimpleDbObservable(() -> DbHelper.this.getFavoriteByPostId(postId));
     }
 
-    public void deleteFavorites(List<Favorite> favoritesToDelete) throws SQLException {
-        getFavoriteDao().delete(favoritesToDelete);
+    public Observable<Boolean> addFavoriteIfAbsentAsync(Favorite favoriteToAdd) {
+        return makeSimpleDbObservable(() -> {
+            if (getFavoriteByPostId(favoriteToAdd.getPostId()) != null) {
+                return false;
+            }
+            addFavorite(favoriteToAdd);
+            return true;
+        });
     }
 
-    public void addFavorite(Favorite favoriteToAdd) throws SQLException {
+    public Observable<Boolean> addFavoritesAsync(List<Favorite> favoritesToAdd) {
+        return makeSimpleDbObservable(() -> {
+            addFavorites(favoritesToAdd);
+            return true;
+        });
+    }
+
+    public Observable<Boolean> deleteFavoriteIfPresentAsync(long postId) {
+        return makeSimpleDbObservable(() -> {
+            Favorite favorite = getFavoriteByPostId(postId);
+            if (favorite == null) {
+                return false;
+            }
+            deleteFavorite(favorite);
+            return true;
+        });
+    }
+
+    public Observable<Boolean> deleteFavoritesAsync(List<Favorite> favoritesToDelete) {
+        return makeSimpleDbObservable(() -> {
+            deleteFavorites(favoritesToDelete);
+            return true;
+        });
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ///////////////////////// private /////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+
+    private Post getPostByPostId(long postId) throws SQLException {
+        return getPostDao().queryBuilder()
+                .where().eq(Post.Column.POST_ID, postId)
+                .queryForFirst();
+    }
+
+    private int addPost(Post post) throws SQLException {
+        return getPostDao().create(post);
+    }
+
+    private int deletePostById(long postId) throws SQLException {
+        return getPostDao().deleteById(postId);
+    }
+
+    private Favorite getFavoriteByPostId(long postId) throws SQLException {
+        return getFavoriteDao().queryBuilder()
+                .where().eq(Favorite.Column.POST_ID, postId)
+                .queryForFirst();
+    }
+
+    private void addFavorite(Favorite favoriteToAdd) throws SQLException {
         getFavoriteDao().createIfNotExists(favoriteToAdd);
     }
 
-    public void addFavorites(List<Favorite> favoritesToAdd) throws SQLException {
+    private void addFavorites(List<Favorite> favoritesToAdd) throws SQLException {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
@@ -150,10 +193,12 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public Favorite getFavoriteByPostId(long postId) throws SQLException {
-        return getFavoriteDao().queryBuilder()
-                .where().eq(Favorite.Column.POST_ID, postId)
-                .queryForFirst();
+    private void deleteFavorite(Favorite favoriteToDelete) throws SQLException {
+        getFavoriteDao().delete(favoriteToDelete);
+    }
+
+    private void deleteFavorites(List<Favorite> favoritesToDelete) throws SQLException {
+        getFavoriteDao().delete(favoritesToDelete);
     }
 
     private Dao<Post, Long> getPostDao() throws SQLException {

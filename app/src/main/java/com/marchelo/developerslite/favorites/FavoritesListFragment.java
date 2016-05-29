@@ -39,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * @author Oleg Green
@@ -46,6 +47,8 @@ import butterknife.OnItemClick;
  */
 public class FavoritesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Favorite>> {
     private static final String TAG = FavoritesListFragment.class.getSimpleName();
+
+    protected CompositeSubscription mSubscriptions;
 
     @BindView(R.id.favorites_list)
     protected GridView mFavoritesListView;
@@ -58,6 +61,8 @@ public class FavoritesListFragment extends Fragment implements LoaderManager.Loa
         View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
         ButterKnife.bind(this, view);
 
+        mSubscriptions = new CompositeSubscription();
+
         initEmptyView();
 
         mFavoritesListView.setAdapter(new FavoritesListAdapter(getActivity()));
@@ -67,6 +72,14 @@ public class FavoritesListFragment extends Fragment implements LoaderManager.Loa
         getLoaderManager().initLoader(GetFavoritesLoader.ID, null, this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        mSubscriptions.unsubscribe();
+        mSubscriptions = null;
+
+        super.onDestroyView();
     }
 
     private void initEmptyView() {
@@ -181,31 +194,39 @@ public class FavoritesListFragment extends Fragment implements LoaderManager.Loa
         }
 
         private void deleteFavorites(ActionMode mode, List<Favorite> listToDelete) {
-            try {
-                DbHelper dbHelper = DbHelper.from(getContext());
+            DbHelper dbHelper = DbHelper.from(getContext());
 
-                dbHelper.deleteFavorites(listToDelete);
-                getLoaderManager().getLoader(GetFavoritesLoader.ID).onContentChanged();
-                mode.finish();
+            mSubscriptions.add(dbHelper.deleteFavoritesAsync(listToDelete)
+                    .subscribe(aBoolean -> {
+                        onFavoritesSuccessfullyDeleted(mode, listToDelete, dbHelper);
 
-                Snackbar.make(getView(), R.string.favorites_success_deletion_msg, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.favorites_undo_deletion_label, v -> {
-                            try {
-                                dbHelper.addFavorites(listToDelete);
-                                Snackbar.make(getView(), R.string.favorites_success_restoration_msg, Snackbar.LENGTH_SHORT).show();
-                                getLoaderManager().getLoader(GetFavoritesLoader.ID).onContentChanged();
+                    }, throwable -> {
+                        Log.e(TAG, "deleteFavorites: failed to delete favorites: ", throwable);
+                        Snackbar.make(getView(), R.string.favorites_failed_deletion_msg, Snackbar.LENGTH_LONG).show();
+                    }));
+        }
 
-                            } catch (SQLException e) {
-                                Log.e(TAG, "deleteFavorites: failed to restore deleted favorites: ", e);
-                                Snackbar.make(getView(), R.string.favorites_failed_restoration_msg, Snackbar.LENGTH_LONG).show();
-                            }
-                        })
-                        .show();
+        private void onFavoritesSuccessfullyDeleted(ActionMode mode, List<Favorite> listToDelete, DbHelper dbHelper) {
+            getLoaderManager().getLoader(GetFavoritesLoader.ID).onContentChanged();
+            mode.finish();
 
-            } catch (SQLException e) {
-                Log.e(TAG, "deleteFavorites: failed to delete favorites: ", e);
-                Snackbar.make(getView(), R.string.favorites_failed_deletion_msg, Snackbar.LENGTH_LONG).show();
-            }
+            Snackbar.make(getView(), R.string.favorites_success_deletion_msg, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.favorites_undo_deletion_label, v -> {
+                        restoreDeletedFavorites(listToDelete, dbHelper);
+                    })
+                    .show();
+        }
+
+        private void restoreDeletedFavorites(List<Favorite> listToDelete, DbHelper dbHelper) {
+            mSubscriptions.add(dbHelper.addFavoritesAsync(listToDelete)
+                    .subscribe(aBoolean -> {
+                        Snackbar.make(getView(), R.string.favorites_success_restoration_msg, Snackbar.LENGTH_SHORT).show();
+                        getLoaderManager().getLoader(GetFavoritesLoader.ID).onContentChanged();
+
+                    }, throwable -> {
+                        Log.e(TAG, "restoreDeletedFavorites: failed to restore deleted favorites: ", throwable);
+                        Snackbar.make(getView(), R.string.favorites_failed_restoration_msg, Snackbar.LENGTH_LONG).show();
+                    }));
         }
     }
 }
