@@ -26,7 +26,6 @@ import com.marchelo.developerslite.utils.PostViewHelper;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
-import java.sql.SQLException;
 import java.text.DateFormat;
 
 import butterknife.BindColor;
@@ -110,12 +109,14 @@ public class PostViewHolder extends APostViewHolder {
                                 }));
 
         saveLinkGifView.setOnClickListener(null);
-        try {
-            saveLinkGifView.setSelected(mDbHelper.getFavoriteByPostId(mPost.getPostId()) != null);
-            saveLinkGifView.setOnClickListener(new OnAddToFavoriteListener(mDbHelper, mPost));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mSubscriptions.add(
+                mDbHelper.getFavoriteByPostIdAsync(mPost.getPostId())
+                        .subscribe(
+                                favorite -> {
+                                    saveLinkGifView.setSelected(favorite != null);
+                                    saveLinkGifView.setOnClickListener(
+                                            new OnAddToFavoriteListener(mSubscriptions, mDbHelper, mPost));
+                                }));
 
         failToLoadView.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
@@ -250,7 +251,7 @@ public class PostViewHolder extends APostViewHolder {
         private final DbHelper mDbHelper;
         private final Post mCurrentPost;
 
-        private CompositeSubscription mLocalSubscriptions;
+//        private CompositeSubscription mLocalSubscriptions;
 
         public OnBookmarkedListener(CompositeSubscription subscriptions, DbHelper dbHelper, Post post) {
             mGlobalSubscriptions = subscriptions;
@@ -260,10 +261,10 @@ public class PostViewHolder extends APostViewHolder {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (mLocalSubscriptions != null) {
-                mLocalSubscriptions.unsubscribe();
-            }
-            mLocalSubscriptions = new CompositeSubscription();
+//            if (mLocalSubscriptions != null) {
+//                mLocalSubscriptions.unsubscribe();
+//            }
+//            mLocalSubscriptions = new CompositeSubscription();
 
             if (isChecked) {
                 Subscription addIfAbsentSubscription = mDbHelper.addPostIfAbsentAsync(mCurrentPost)
@@ -271,44 +272,57 @@ public class PostViewHolder extends APostViewHolder {
                             Log.d("test2", "onCheckedChanged: addPostIfAbsentAsync: result = " + aBoolean);
                         });
                 mGlobalSubscriptions.add(addIfAbsentSubscription);
-                mLocalSubscriptions.add(addIfAbsentSubscription);
+//                mLocalSubscriptions.add(addIfAbsentSubscription);
 
             } else {
-                Subscription deleteIfPresentSubscription = mDbHelper.deletePostByPostIdIfPresentAsync(mCurrentPost.getPostId())
+                Subscription deleteIfPresentSubscription = mDbHelper.deletePostIfPresentAsync(mCurrentPost)
                         .subscribe(aBoolean -> {
-                            Log.d("test2", "onCheckedChanged: deletePostByPostIdIfPresentAsync: result = " + aBoolean);
+                            Log.d("test2", "onCheckedChanged: deletePostIfPresentAsync: result = " + aBoolean);
                         });
                 mGlobalSubscriptions.add(deleteIfPresentSubscription);
-                mLocalSubscriptions.add(deleteIfPresentSubscription);
+//                mLocalSubscriptions.add(deleteIfPresentSubscription);
             }
         }
     }
 
     private static class OnAddToFavoriteListener implements View.OnClickListener {
 
+        private final CompositeSubscription mGlobalSubscriptions;
         private final DbHelper mDbHelper;
         private final Post mCurrentPost;
 
-        public OnAddToFavoriteListener(DbHelper dbHelper, Post post) {
+//        private CompositeSubscription mLocalSubscriptions;
+
+        public OnAddToFavoriteListener(CompositeSubscription subscriptions, DbHelper dbHelper, Post post) {
+            mGlobalSubscriptions = subscriptions;
             mDbHelper = dbHelper;
             mCurrentPost = post;
         }
 
         @Override
         public void onClick(View view) {
-            try {
-                Favorite foundFavorite = mDbHelper.getFavoriteByPostId(mCurrentPost.getPostId());
+            view.setSelected(!view.isSelected());
 
-                if (!view.isSelected() && foundFavorite == null) {
-                    mDbHelper.addFavorite(new Favorite(mCurrentPost.getPostId(), mCurrentPost.getGifURL(), mCurrentPost.getPreviewURL()));
+//            if (mLocalSubscriptions != null) {
+//                mLocalSubscriptions.unsubscribe();
+//            }
+//            mLocalSubscriptions = new CompositeSubscription();
 
-                } else if (foundFavorite != null) {
-                    mDbHelper.deleteFavorite(foundFavorite);
-                }
-                view.setSelected(!view.isSelected());
+            if (view.isSelected()) {
+                Subscription addFavIfAbsent = mDbHelper.addFavoriteIfAbsentAsync(Favorite.createFrom(mCurrentPost))
+                        .subscribe(aBoolean -> {
+                            Log.d("test2", "onClick: addFavoriteIfAbsentAsync: result = " + aBoolean);
+                        });
+                mGlobalSubscriptions.add(addFavIfAbsent);
+//                mLocalSubscriptions.add(addFavIfAbsent);
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } else {
+                Subscription deleteFavIfPresent = mDbHelper.deleteFavoriteIfPresentAsync(mCurrentPost.getPostId())
+                        .subscribe(aBoolean -> {
+                            Log.d("test2", "onClick: deleteFavoriteIfPresentAsync: result = " + aBoolean);
+                        });
+                mGlobalSubscriptions.add(deleteFavIfPresent);
+//                mLocalSubscriptions.add(deleteFavIfPresent);
             }
         }
     }

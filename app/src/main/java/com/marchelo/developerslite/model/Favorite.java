@@ -32,6 +32,10 @@ public class Favorite {
     @DatabaseField(columnName = Column.PREVIEW_URL)
     private String previewURL;
 
+    public static Favorite createFrom(Post post) {
+        return new Favorite(post.getPostId(), post.getGifURL(), post.getPreviewURL());
+    }
+
     public Favorite() {
         //empty
     }
@@ -44,6 +48,10 @@ public class Favorite {
 
     public long getId() {
         return this.id;
+    }
+
+    public long getPostId() {
+        return postId;
     }
 
     public String getGifURL() {
