@@ -91,6 +91,10 @@ public class PostViewHolder extends APostViewHolder {
         mPost = post;
         mGifUriString = post.getGifURL();
 
+        cancelGifRequestIfNeeded();
+        recycleGifDrawableIfNeeded();
+        cancelPreviewRequestIfNeeded();
+
         if (mSubscriptions != null) {
             mSubscriptions.unsubscribe();
         }
@@ -139,16 +143,6 @@ public class PostViewHolder extends APostViewHolder {
         });
         gifImageView.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
         gifImageView.setOnClickListener(null);
-
-        //cancel gif loading task
-        if (mFutureRef != null && mFutureRef.get() != null && !mFutureRef.get().isCancelled()) {
-            mFutureRef.get().cancel();
-        }
-
-        //cancel image preview loading task
-        if (mLoadImageCallback != null) {
-            mPicasso.cancelRequest(mLoadImageCallback);
-        }
 
         if (descriptionView.isDirty()) {
             descriptionView.resetState();
@@ -239,6 +233,11 @@ public class PostViewHolder extends APostViewHolder {
         return true;
     }
 
+    private void cancelPreviewRequestIfNeeded() {
+        if (mLoadImageCallback != null) {
+            mPicasso.cancelRequest(mLoadImageCallback);
+        }
+    }
 
 
 
@@ -309,7 +308,7 @@ public class PostViewHolder extends APostViewHolder {
             if (view.isSelected()) {
                 Subscription addFavIfAbsent = mDbHelper.addFavoriteIfAbsentAsync(Favorite.createFrom(mCurrentPost))
                         .subscribe(aBoolean -> {
-                            Log.d("test2", "onClick: addFavoriteIfAbsentAsync: result = " + aBoolean);
+//                            Log.d("test2", "onClick: addFavoriteIfAbsentAsync: result = " + aBoolean);
                         });
                 mGlobalSubscriptions.add(addFavIfAbsent);
 //                mLocalSubscriptions.add(addFavIfAbsent);
@@ -317,7 +316,7 @@ public class PostViewHolder extends APostViewHolder {
             } else {
                 Subscription deleteFavIfPresent = mDbHelper.deleteFavoriteIfPresentAsync(mCurrentPost.getPostId())
                         .subscribe(aBoolean -> {
-                            Log.d("test2", "onClick: deleteFavoriteIfPresentAsync: result = " + aBoolean);
+//                            Log.d("test2", "onClick: deleteFavoriteIfPresentAsync: result = " + aBoolean);
                         });
                 mGlobalSubscriptions.add(deleteFavIfPresent);
 //                mLocalSubscriptions.add(deleteFavIfPresent);
