@@ -75,9 +75,7 @@ public class PostViewHolder extends APostViewHolder {
 
         itemView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
-            public void onViewAttachedToWindow(View v) {
-
-            }
+            public void onViewAttachedToWindow(View v) {}
 
             @Override
             public void onViewDetachedFromWindow(View v) {

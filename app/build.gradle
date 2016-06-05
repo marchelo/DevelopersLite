@@ -16,7 +16,7 @@ buildscript {
 repositories {
     mavenCentral()
     maven {url "https://clojars.org/repo/"}
-    maven { url 'https://maven.fabric.io/public' }
+    maven {url 'https://maven.fabric.io/public'}
 }
 
 apply plugin: 'com.android.application'
@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId "com.marchelo.developerslite"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 4
         versionName "1.1"
@@ -94,6 +94,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'io.reactivex:rxandroid:1.0.1'
 
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     compile 'frankiesardo:icepick:3.1.0'
     provided 'frankiesardo:icepick-processor:3.1.0'
     compile 'com.ms-square:expandableTextView:0.1.4'

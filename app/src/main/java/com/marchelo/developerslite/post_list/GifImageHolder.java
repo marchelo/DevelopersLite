@@ -1,9 +1,14 @@
 package com.marchelo.developerslite.post_list;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +22,7 @@ import com.marchelo.developerslite.utils.LoadGifImageReactor;
 import com.marchelo.developerslite.utils.PostViewHelper;
 import com.marchelo.developerslite.utils.ViewsTintConfig;
 import com.marchelo.developerslite.view.ImageShareToolbar;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.lang.ref.WeakReference;
 import java.util.Random;
@@ -88,8 +94,38 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.btn_save_image)
     protected void saveImage() {
-        String newFileName = SAVE_IMAGE_FILE_NAME_PREFIX + (mRandom.nextInt(10000) + 10000);
-        PostViewHelper.saveImage(mContext, mGifUriString, newFileName);
+        RxPermissions.getInstance(mContext)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        PostViewHelper.saveImage(mContext, mGifUriString, getGifNameForLocalSave());
+
+                    } else {
+                        showStoragePermissionsNotGrantedDialog();
+                    }
+                });
+    }
+
+    private void showStoragePermissionsNotGrantedDialog() {
+        new AlertDialog.Builder(mContext)
+                .setTitle(R.string.no_permission_to_save_file_dialog_title)
+                .setMessage(R.string.no_permission_to_save_file_dialog_msg)
+                .setPositiveButton(R.string.no_permission_to_save_file_dialog_ok_btn, (dialog, which) -> {
+                    final Intent i = new Intent();
+                    i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    i.addCategory(Intent.CATEGORY_DEFAULT);
+                    i.setData(Uri.parse("package:" + mContext.getPackageName()));
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    mContext.startActivity(i);
+                })
+                .setNegativeButton(R.string.no_permission_to_save_file_dialog_cancel_btn, null)
+                .show();
+    }
+
+    @NonNull
+    protected String getGifNameForLocalSave() {
+        return SAVE_IMAGE_FILE_NAME_PREFIX + (mRandom.nextInt(10000) + 10000);
     }
 
     @OnLongClick(R.id.btn_share_image_link)
@@ -120,6 +156,7 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
         Log.d(TAG, "loadGifImage(), gif uri = " + gifUri);
 
         mGifUriString = gifUri.toString();
+        saveLinkGifView.setVisibility(View.GONE);
         refreshShareImageLinkButtonVisibility(gifUri);
 
         imageToolbarView.hide();
