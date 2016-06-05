@@ -1,6 +1,7 @@
 package com.marchelo.developerslite.details;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -40,9 +41,9 @@ public class APostViewHolder extends GifImageHolder {
     }
 
     @Override
-    @OnClick(R.id.btn_save_image)
-    protected void saveImage() {
-        PostViewHelper.saveImage(mContext, mPost);
+    @NonNull
+    protected String getGifNameForLocalSave() {
+        return String.valueOf(mPost.getPostId());
     }
 
     @Optional @OnClick(R.id.btn_share_post)
