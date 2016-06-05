@@ -3,6 +3,7 @@ package com.marchelo.developerslite.post_list;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
+import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageButton;
 
 /**
@@ -199,10 +201,29 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
     }
 
     public void release() {
-        mUnBinder.unbind();
+        cancelGifRequestIfNeeded();
+        recycleGifDrawableIfNeeded();
 
-        if (mFutureRef.get() != null) {
+        mUnBinder.unbind();
+    }
+
+    public void cancelGifRequestIfNeeded() {
+        if (mFutureRef != null && mFutureRef.get() != null && !mFutureRef.get().isCancelled()) {
             mFutureRef.get().cancel();
+        }
+    }
+
+    public void recycleGifDrawableIfNeeded() {
+        Drawable drawable = gifImageView.getDrawable();
+        Drawable bgDrawable = gifImageView.getBackground();
+        if (drawable instanceof GifDrawable) {
+            Log.d("test2", "release(), drawable is GifDrawable, recycling it");
+            ((GifDrawable) drawable).recycle();
+        }
+        if (bgDrawable instanceof GifDrawable) {
+            Log.d("test2", "release(), bgDrawable is GifDrawable, recycling it");
+            ((GifDrawable) bgDrawable).recycle();
+
         }
     }
 }
