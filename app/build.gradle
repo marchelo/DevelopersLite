@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId "com.marchelo.developerslite"
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 5
         versionName "2"
