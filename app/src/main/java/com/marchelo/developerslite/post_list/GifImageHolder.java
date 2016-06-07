@@ -121,7 +121,7 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
                     i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     mContext.startActivity(i);
                 })
-                .setNegativeButton(R.string.no_permission_to_save_file_dialog_cancel_btn, null)
+                .setNegativeButton(R.string.cancel_btn, null)
                 .show();
     }
 
@@ -217,11 +217,9 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
         Drawable drawable = gifImageView.getDrawable();
         Drawable bgDrawable = gifImageView.getBackground();
         if (drawable instanceof GifDrawable) {
-            Log.d("test2", "release(), drawable is GifDrawable, recycling it");
             ((GifDrawable) drawable).recycle();
         }
         if (bgDrawable instanceof GifDrawable) {
-            Log.d("test2", "release(), bgDrawable is GifDrawable, recycling it");
             ((GifDrawable) bgDrawable).recycle();
 
         }

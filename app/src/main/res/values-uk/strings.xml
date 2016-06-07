@@ -32,18 +32,18 @@
     <string name="dialog_close">Закрити</string>
     <string name="expand_text_hint">Розгорнути текст</string>
     <string name="gif_viewer_fail_to_load_gif">Помилка при завантаженні GIF картинки</string>
-    <string name="logo_image_description">Лого застосунку</string>
-    <string name="no_app_to_share_link_found">Не знайдено застосунків щоб поділитися веб посиланням.</string>
-    <string name="no_browser_found">Не знайдено застосунків для відкриття веб посилання. Спробуйте встановити веб браузер.</string>
+    <string name="logo_image_description">Лого додатку</string>
+    <string name="no_app_to_share_link_found">Не знайдено додатків щоб поділитися веб посиланням.</string>
+    <string name="no_browser_found">Не знайдено додатків для відкриття веб посилання. Спробуйте встановити веб браузер.</string>
     <string name="fragment_post_list_no_data">Немає даних</string>
     <string name="btn_details_hint">Детальний вигляд</string>
-    <string name="activity_gif_viewer_cannot_open_link">\'%s\' застосунок не в змозі відкрити цей файл чи посилання.</string>
+    <string name="activity_gif_viewer_cannot_open_link">\'%s\' додаток не в змозі відкрити цей файл чи посилання.</string>
     <string name="activity_details_show_alternative_apps">В якості альтернативи Ви можете відкрити веб посилання за допомогою:</string>
-    <string name="activity_details_cannot_show_link">Наразі \'%s\' застосунок не в змозі відобразити це веб посилання.</string>
+    <string name="activity_details_cannot_show_link">Наразі \'%s\' додаток не в змозі відобразити це веб посилання.</string>
     <string name="action_auto_load_images">Авто завантаження гіфок</string>
-    <string name="auto_load_gifs_cancel_enable_btn">Відміна</string>
+    <string name="cancel_btn">Відміна</string>
     <string name="auto_load_gifs_confirm_enable_btn">Підтвердити</string>
-    <string name="auto_load_gifs_warning">Автоматичне завантаження гіфок може спричинити проблеми з продуктивністю роботи застосунка.\nВи дійсно бажаєте цього?</string>
+    <string name="auto_load_gifs_warning">Автоматичне завантаження гіфок може спричинити проблеми з продуктивністю роботи додатку.\nВи дійсно бажаєте цього?</string>
     <string name="btn_bookmarks_hint">Додати/видалити закладку</string>
     <string name="btn_save_image_hint">Зберегти гіфку</string>
     <string name="btn_share_image_hint">Поділитись гіфкою</string>
@@ -61,7 +61,7 @@
     <string name="save_file_start_downloading">Файлу в кеші не знайдено. Завантажуємо…</string>
     <string name="post_item_date">Дата: %s</string>
     <string name="main_menu_search_request_too_short">Пошуковий запит має складатись хоча б з 2-х символів</string>
-    <string name="no_app_to_share_gif_found">Не знайдено застосунків щоб поділитися гіфкою.</string>
+    <string name="no_app_to_share_gif_found">Не знайдено додатків щоб поділитися гіфкою.</string>
     <string name="favorites_empty_view_text_first_part">Натисніть</string>
     <string name="favorites_empty_view_text_last_part">" \nщоб додати гіфки в улюблені"</string>
     <string name="post_list_footer_try_again">Спробувати знову</string>
@@ -77,5 +77,8 @@
         <item quantity="many">%d коментарів</item>
         <item quantity="other">%d коментарів</item>
     </plurals>
-    <string name="details_loading_comments_text">Завантаження коментарів...</string>
+    <string name="details_loading_comments_text">Завантаження коментарів…</string>
+    <string name="no_permission_to_save_file_dialog_title">Неможливо зберегти файл</string>
+    <string name="no_permission_to_save_file_dialog_ok_btn">Перейти до налаштувань</string>
+    <string name="no_permission_to_save_file_dialog_msg">У додатка не має прав на збереження файлу в памʼяті пристрою. Для того, щоб це змінити - перейдіть в налаштування дозволів додатку і надайте дозвіл на роботу з памʼяттю</string>
 </resources>

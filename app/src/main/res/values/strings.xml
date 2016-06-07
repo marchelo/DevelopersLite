@@ -73,7 +73,7 @@
     <string name="btn_bookmarks_hint">Add/Remove Bookmark</string>
     <string name="action_auto_load_images">Auto load gif images</string>
     <string name="auto_load_gifs_confirm_enable_btn">Confirm</string>
-    <string name="auto_load_gifs_cancel_enable_btn">Cancel</string>
+    <string name="cancel_btn">Cancel</string>
     <string name="auto_load_gifs_warning">Automatic gif images loading may cause performance issues. \nDo You really want to enable it?</string>
     <string name="title_favorites">Favorite GIFs</string>
     <string name="post_list_footer_try_again">Try again</string>
@@ -84,12 +84,11 @@
     <string name="favorites_success_restoration_msg">Restored</string>
     <string name="favorites_failed_restoration_msg">Failed to restore deleted gifs</string>
     <string name="favorites_failed_deletion_msg">Failed to delete selected gifs from favorites</string>
-    <string name="details_loading_comments_text">Loading comments...</string>
+    <string name="details_loading_comments_text">Loading comments…</string>
     <string name="details_no_comments_text">No comments</string>
     <string name="no_permission_to_save_file_dialog_title">Unable to save file</string>
     <string name="no_permission_to_save_file_dialog_msg">Permissions to save files to device storage wasn\'t granted for this application. To grant permissions go to application permissions settings screen and allow storage permissions</string>
     <string name="no_permission_to_save_file_dialog_ok_btn">Go to settings</string>
-    <string name="no_permission_to_save_file_dialog_cancel_btn">Cancel</string>
     <plurals name="details_n_comments_text">
         <item quantity="one">%d comment</item>
         <item quantity="other">%d comments</item>

@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                         .setTitle(item.getTitle())
                         .setMessage(R.string.auto_load_gifs_warning)
                         .setCancelable(true)
-                        .setNegativeButton(R.string.auto_load_gifs_cancel_enable_btn, null)
+                        .setNegativeButton(R.string.cancel_btn, null)
                         .setPositiveButton(R.string.auto_load_gifs_confirm_enable_btn,
                                 (dialog, which) -> {
                                     StorageUtils.setAutoLoadGifEnabled(this, true);
@@ -223,6 +223,11 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
         outState.putBoolean(SPINNER_VISIBILITY_KEY, mToolbarSpinner.getVisibility() == View.VISIBLE);
         outState.putBoolean(SEARCH_VISIBILITY_KEY, mSearchLayout.getVisibility() == View.VISIBLE);
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+
     }
 
     @Override

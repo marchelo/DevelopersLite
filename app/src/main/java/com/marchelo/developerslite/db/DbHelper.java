@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
 public class DbHelper extends OrmLiteSqliteOpenHelper {
     private static final String TAG = DbHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "database";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     /**
      * The data access object used to interact with the Sqlite database to do C.R.U.D operations.
@@ -64,12 +64,9 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource,
                           int oldVersion, int newVersion) {
         try {
-            /**
-             * Recreates the database when onUpgrade is called by the framework
-             */
-            TableUtils.dropTable(connectionSource, Post.class, false);
-            TableUtils.dropTable(connectionSource, Favorite.class, false);
-            onCreate(database, connectionSource);
+            if (oldVersion < 2) {
+                TableUtils.createTable(connectionSource, Favorite.class);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();

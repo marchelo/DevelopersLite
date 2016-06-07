@@ -40,7 +40,7 @@
     <string name="activity_gif_viewer_cannot_open_link">\'%s\' приложение не может открыть этот файл или ссылку.</string>
     <string name="activity_details_cannot_show_link">На данный момент \'%s\' приложение не может отобразить эту веб ссылку.</string>
     <string name="action_auto_load_images">Авто подгрузка гифок</string>
-    <string name="auto_load_gifs_cancel_enable_btn">Отмена</string>
+    <string name="cancel_btn">Отмена</string>
     <string name="auto_load_gifs_confirm_enable_btn">Подтвердить</string>
     <string name="auto_load_gifs_warning">Автоматическая подгрузка гифок может привести к проблемам производительности.\nВы действительно хотите её включить?</string>
     <string name="btn_bookmarks_hint">Добавить/удалить закладку</string>
@@ -78,4 +78,7 @@
         <item quantity="other">%d комментариев</item>
     </plurals>
     <string name="details_loading_comments_text">Загрузка комментариев...</string>
+    <string name="no_permission_to_save_file_dialog_title">Невозможно сохранить файл</string>
+    <string name="no_permission_to_save_file_dialog_ok_btn">Перейти к настройкам</string>
+    <string name="no_permission_to_save_file_dialog_msg">У приложения нет прав для сохранения файла в память устройства. Для того, что бы исправить это - перейтиде в настройки разрешений приложения и предоставте разрешение для работы с памятью</string>
 </resources>

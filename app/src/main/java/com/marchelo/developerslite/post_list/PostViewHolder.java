@@ -19,6 +19,7 @@ import com.marchelo.developerslite.details.PostDetailsActivity;
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.db.DbHelper;
 import com.marchelo.developerslite.model.Favorite;
+import com.marchelo.developerslite.utils.Config;
 import com.marchelo.developerslite.utils.ViewsTintConfig;
 import com.marchelo.developerslite.model.Post;
 import com.marchelo.developerslite.utils.LoadGifImageReactor;
@@ -40,6 +41,8 @@ import rx.subscriptions.CompositeSubscription;
  * @since 17.09.15
  */
 public class PostViewHolder extends APostViewHolder {
+    protected final DateFormat DATE_TIME_FORMATTER = Config.getDateFormat();
+
     protected LoadPreviewImageCallback mLoadImageCallback;
     protected CompositeSubscription mSubscriptions;
 
@@ -150,7 +153,7 @@ public class PostViewHolder extends APostViewHolder {
 
         //initialize view with data
         PostViewHelper.initCommonViews(descriptionView, authorView, ratingView, post);
-        dateView.setText(mContext.getString(R.string.post_item_date, DateFormat.getDateInstance().format(post.getDate())));
+        dateView.setText(mContext.getString(R.string.post_item_date, DATE_TIME_FORMATTER.format(post.getDate())));
 
         //Load preview image
         mLoadImageCallback = new LoadPreviewImageCallback(this);
