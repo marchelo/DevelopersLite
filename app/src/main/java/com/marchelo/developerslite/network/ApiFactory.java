@@ -37,13 +37,9 @@ public class ApiFactory {
 
     static {
         Gson gson = new GsonBuilder()
-//                .setDateFormat("MMM DD, yyyy hh:mm:ss a")
                 .registerTypeAdapter(Date.class, new DateDeserializer())
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
-//
-//        String date = "Aug 16, 2013 12:33:00 PM";
-//        Log.d("test2", " result date = " + POST_DATE_FORMAT.format(new Date()));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.WEB_SERVICE_BASE_URL)
@@ -56,11 +52,12 @@ public class ApiFactory {
     }
 
     public static ApiByPage lastPostsApi() {
-        return (pageNumber, pageSize) -> WEB_SERVICE.getPosts(
-                DevLifeService.LATEST_CATEGORY,
-                pageNumber,
-                pageSize,
-                DevLifeService.GIF_TYPE);
+        return (pageNumber, pageSize) ->
+                WEB_SERVICE.getPosts(
+                        DevLifeService.LATEST_CATEGORY,
+                        pageNumber,
+                        pageSize,
+                        DevLifeService.GIF_TYPE);
     }
 
     public static ApiByPage hotPostsApi() {
