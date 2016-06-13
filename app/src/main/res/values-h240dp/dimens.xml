@@ -1,3 +1,3 @@
 <resources>
-    <dimen name="fragment_post_list_height">240dp</dimen>
+    <dimen name="fragment_post_list_height">260dp</dimen>
 </resources>

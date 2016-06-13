@@ -21,7 +21,7 @@
     <dimen name="refresh_layout_progress_view_end">120dp</dimen>
     <dimen name="post_action_button_width">48dp</dimen>
     <dimen name="post_action_button_height">42dp</dimen>
-    <dimen name="post_share_button_size">40dp</dimen>
+    <dimen name="post_share_button_size">35dp</dimen>
     <dimen name="post_layout_padding">6dp</dimen>
     <dimen name="post_toolbar_bg_border_size">2dp</dimen>
     <dimen name="post_toolbar_bg_corner_radius">7dp</dimen>

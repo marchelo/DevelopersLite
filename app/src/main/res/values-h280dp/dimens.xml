@@ -1,3 +1,4 @@
 <resources>
-    <dimen name="fragment_post_list_height">280dp</dimen>
+    <dimen name="fragment_post_list_height">320dp</dimen>
+    <dimen name="post_share_button_size">40dp</dimen>
 </resources>
