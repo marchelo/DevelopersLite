@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -96,16 +97,24 @@ public class GifImageHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.btn_save_image)
     protected void saveImage() {
-        RxPermissions.getInstance(mContext)
-                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(granted -> {
-                    if (granted) {
-                        PostViewHelper.saveImage(mContext, mGifUriString, getGifNameForLocalSave());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            RxPermissions.getInstance(mContext)
+                    .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(granted -> {
+                        if (granted) {
+                            doSaveImageLocally();
 
-                    } else {
-                        showStoragePermissionsNotGrantedDialog();
-                    }
-                });
+                        } else {
+                            showStoragePermissionsNotGrantedDialog();
+                        }
+                    });
+        } else {
+            doSaveImageLocally();
+        }
+    }
+
+    private void doSaveImageLocally() {
+        PostViewHelper.saveImage(mContext, mGifUriString, getGifNameForLocalSave());
     }
 
     private void showStoragePermissionsNotGrantedDialog() {

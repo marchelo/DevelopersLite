@@ -154,12 +154,12 @@ public final class PostViewHelper {
     }
 
     public static boolean showShareImageHint(Context context) {
-        Toast.makeText(context, R.string.btn_share_image_link_hint, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.btn_share_image_hint, Toast.LENGTH_SHORT).show();
         return true;
     }
 
     public static boolean showSaveImageHint(Context context) {
-        Toast.makeText(context, R.string.btn_share_image_link_hint, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.btn_save_image_hint, Toast.LENGTH_SHORT).show();
         return true;
     }
 
