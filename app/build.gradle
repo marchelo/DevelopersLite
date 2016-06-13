@@ -32,8 +32,8 @@ android {
         applicationId "com.marchelo.developerslite"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 5
-        versionName "2"
+        versionCode 6
+        versionName "2.0.1"
         vectorDrawables.useSupportLibrary = true
     }
 
