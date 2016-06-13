@@ -44,6 +44,6 @@ public class GifViewerActivity extends AppCompatActivity {
     }
 
     private boolean verifyGifImage(Uri gifUri) {
-        return gifUri.toString().endsWith(".gif");
+        return gifUri != null && gifUri.toString().endsWith(".gif");
     }
 }
