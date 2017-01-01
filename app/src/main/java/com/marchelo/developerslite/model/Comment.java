@@ -1,5 +1,6 @@
 package com.marchelo.developerslite.model;
 
+import com.example.autoparcel.AutoParcel;
 import com.google.gson.annotations.Expose;
 
 import java.util.Date;
@@ -22,6 +23,8 @@ import java.util.Date;
  * @author Oleg Green
  * @since 16.05.16
  */
+
+@AutoParcel
 public class Comment {
 
     @Expose
