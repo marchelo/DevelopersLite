@@ -309,7 +309,7 @@ public class PostViewHolder extends APostViewHolder {
 //            mLocalSubscriptions = new CompositeSubscription();
 
             if (view.isSelected()) {
-                Subscription addFavIfAbsent = mDbHelper.addFavoriteIfAbsentAsync(Favorite.createFrom(mCurrentPost))
+                Subscription addFavIfAbsent = mDbHelper.addFavoriteIfAbsentAsync(Favorite.Companion.createFrom(mCurrentPost))
                         .subscribe(aBoolean -> {
 //                            Log.d("test2", "onClick: addFavoriteIfAbsentAsync: result = " + aBoolean);
                         });

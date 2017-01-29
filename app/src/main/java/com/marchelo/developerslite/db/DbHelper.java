@@ -105,7 +105,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     //used in loader
     public List<Favorite> getAllFavorites() throws SQLException {
-        return getFavoriteDao().queryBuilder().orderBy(Favorite.Column.ID, false).query();
+        return getFavoriteDao().queryBuilder().orderBy(Favorite.Column.INSTANCE.getID(), false).query();
     }
 
     public Observable<Favorite> getFavoriteByPostIdAsync(long postId) {
@@ -167,7 +167,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
 
     private Favorite getFavoriteByPostId(long postId) throws SQLException {
         return getFavoriteDao().queryBuilder()
-                .where().eq(Favorite.Column.POST_ID, postId)
+                .where().eq(Favorite.Column.INSTANCE.getPOST_ID(), postId)
                 .queryForFirst();
     }
 
