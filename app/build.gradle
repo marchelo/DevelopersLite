@@ -1,26 +1,5 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        //noinspection GradleDynamicVersion
-//        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
-
-// Required because retrolambda is on maven central
-repositories {
-    mavenCentral()
-    maven {url "https://clojars.org/repo/"}
-    maven {url 'https://maven.fabric.io/public'}
-}
-
 apply plugin: 'com.android.application'
-//apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'io.fabric'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -29,8 +8,8 @@ android {
         applicationId "com.marchelo.developerslite"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 6
-        versionName "2.0.1"
+        versionCode 7
+        versionName "3.0.0"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -60,7 +39,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            applicationIdSuffix ".debug"
+//            applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
         }
         release {
@@ -81,6 +60,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     implementation 'com.j256.ormlite:ormlite-core:4.48'
     implementation 'com.j256.ormlite:ormlite-android:4.48'
@@ -109,8 +92,7 @@ dependencies {
     compileOnly 'frankiesardo:icepick-processor:3.1.0'
 
     implementation 'com.ms-square:expandableTextView:0.1.4'
-
-    implementation('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
-        transitive = true
-    }
 }
+
+// Add to the bottom of the file
+apply plugin: 'com.google.gms.google-services'
