@@ -39,7 +39,7 @@
         android:layout_alignParentBottom="true"
         android:background="#d1d1d1"/>
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_open_in_browser"
         android:layout_width="30dp"
         android:layout_height="30dp"

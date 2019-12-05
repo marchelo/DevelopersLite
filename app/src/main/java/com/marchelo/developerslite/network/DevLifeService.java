@@ -1,7 +1,7 @@
 package com.marchelo.developerslite.network;
 
-import android.support.annotation.IntRange;
-import android.support.annotation.StringDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.StringDef;
 
 import com.marchelo.developerslite.model.CommentsListHolder;
 import com.marchelo.developerslite.model.Post;

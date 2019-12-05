@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +28,7 @@
             android:scrollbarStyle="outsideOverlay"
             android:overScrollMode="never"
             tools:listitem="@layout/item_view_post" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/view_empty" />
 </FrameLayout>

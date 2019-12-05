@@ -2,9 +2,9 @@ package com.marchelo.developerslite.post_list;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.marchelo.developerslite.R;
 import com.marchelo.developerslite.db.DbHelper;

@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-import android.support.annotation.CheckResult;
-import android.support.annotation.StringRes;
+import androidx.annotation.CheckResult;
+import androidx.annotation.StringRes;
 import android.util.Log;
 
 import com.marchelo.developerslite.R;

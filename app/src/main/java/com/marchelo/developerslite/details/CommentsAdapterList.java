@@ -1,6 +1,6 @@
 package com.marchelo.developerslite.details;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.marchelo.developerslite.model.Comment;
 
