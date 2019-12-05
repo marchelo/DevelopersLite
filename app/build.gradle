@@ -27,7 +27,7 @@ android {
 
     defaultConfig {
         applicationId "com.marchelo.developerslite"
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 6
         versionName "2.0.1"
@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-core:4.48'
     implementation 'com.j256.ormlite:ormlite-android:4.48'
 
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.1.9'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.jakewharton:butterknife:8.0.1'
 
     annotationProcessor('com.jakewharton:butterknife-compiler:8.0.1') {
