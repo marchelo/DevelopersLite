@@ -9,7 +9,7 @@
     <application
         android:name=".DevLifeApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:largeHeap="true"
         android:label="@string/app_name"
