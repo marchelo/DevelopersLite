@@ -8,8 +8,8 @@ android {
         applicationId "com.marchelo.developerslite"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 7
-        versionName "3.0.0"
+        versionCode 8
+        versionName "3.0." + defaultConfig.versionCode
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
