@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -186,14 +189,27 @@ public final class PostViewHelper {
     public static void shareImageAndDescription(@NonNull Context context, @NonNull String gifUrl, @Nullable String description) {
         String fileName = DiskCache.getFileNameFromUrl(gifUrl);
         Uri fileUri = DevLifeApplication.getCache().getFileUri(fileName);
-        if (new File(fileUri.getPath()).exists()) {
+        File file = new File(fileUri.getPath());
 
+        if (file.exists()) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("image/gif");
-            sharingIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
             if (!TextUtils.isEmpty(description)) {
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, description);
             }
+
+            Uri uriToShare = fileUri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uriToShare = FileProvider.getUriForFile(
+                        context,
+                        context.getPackageName() + ".provider",
+                        file
+                );
+                sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            }
+
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, uriToShare);
 
             try {
                 context.startActivity(sharingIntent);

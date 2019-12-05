@@ -42,6 +42,7 @@ public final class IntentHelper {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
             context.startActivity(sharingIntent);
@@ -59,6 +60,7 @@ public final class IntentHelper {
         Intent openSite = new Intent();
         openSite.setAction(Intent.ACTION_VIEW);
         openSite.setData(Uri.parse(postUrl));
+        openSite.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         return openForIntentExcludeSelf(context, openSite, "Open post web link:");
     }
