@@ -21,7 +21,7 @@ public class FavoritesListAdapter extends BaseAdapter {
 
     public FavoritesListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        mPicasso = Picasso.with(context);
+        mPicasso = new Picasso.Builder(context).build();
     }
 
     public void setData(List<Favorite> items) {

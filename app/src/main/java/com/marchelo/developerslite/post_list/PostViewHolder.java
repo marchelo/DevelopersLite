@@ -67,7 +67,7 @@ public class PostViewHolder extends APostViewHolder {
         super(itemView, uiHandler);
 
         mDbHelper = dbHelper;
-        mPicasso = Picasso.with(mContext);
+        mPicasso = new Picasso.Builder(mContext).build();
 
         bookmarkBtn.setButtonDrawable(ViewsTintConfig.getTinted(mContext,
                 R.drawable.ic_bookmark_selector, R.color.bookmark_button_tint_selector));

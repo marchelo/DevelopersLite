@@ -27,7 +27,8 @@ public class LoadPreviewImageCallback implements Target {
     }
 
     @Override
-    public void onBitmapFailed(Drawable errorDrawable) {
+    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
     }
 
     @Override
