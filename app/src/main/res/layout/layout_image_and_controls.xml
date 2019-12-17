@@ -24,7 +24,7 @@
         android:button="@android:color/transparent"
         android:background="@drawable/play_pause_selector" />
 
-    <com.marchelo.developerslite.view.ProgressBarTint
+    <com.marchelo.developerslite2.view.ProgressBarTint
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="10dp"
@@ -36,7 +36,7 @@
         app:colorTint="@color/colorPrimaryDark"
         style="?android:attr/progressBarStyleHorizontal"/>
 
-    <com.marchelo.developerslite.view.ImageShareToolbar
+    <com.marchelo.developerslite2.view.ImageShareToolbar
         android:id="@+id/btn_image_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             style="@style/PostActionButton"
             tools:ignore="UnusedAttribute"
             tools:visibility="visible"/>
-    </com.marchelo.developerslite.view.ImageShareToolbar>
+    </com.marchelo.developerslite2.view.ImageShareToolbar>
 
     <TextView
         android:id="@+id/view_load_fail"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.marchelo.developerslite.view.ExpandableTextView
+<com.marchelo.developerslite2.view.ExpandableTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -30,4 +30,4 @@
         android:paddingRight="10dp"
         android:scaleType="fitCenter"
         android:contentDescription="@string/expand_text_hint"/>
-</com.marchelo.developerslite.view.ExpandableTextView>
+</com.marchelo.developerslite2.view.ExpandableTextView>

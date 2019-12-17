@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.marchelo.developerslite.view.GifAndTextContainer
+<com.marchelo.developerslite2.view.GifAndTextContainer
     android:id="@+id/image_container"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,4 +14,4 @@
 
     <include
         layout="@layout/layout_image_post" />
-</com.marchelo.developerslite.view.GifAndTextContainer>
+</com.marchelo.developerslite2.view.GifAndTextContainer>

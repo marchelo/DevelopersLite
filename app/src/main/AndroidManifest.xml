@@ -1,102 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.marchelo.developerslite">
+    package="com.marchelo.developerslite2">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application
-        android:name=".DevLifeApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
-        android:largeHeap="true"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        tools:targetApi="m">
+<!--    <application-->
+<!--        android:name=".DevLifeApplication"-->
+<!--        android:allowBackup="true"-->
+<!--        android:icon="@mipmap/ic_launcher_round"-->
+<!--        android:usesCleartextTraffic="true"-->
+<!--        android:largeHeap="true"-->
+<!--        android:label="@string/app_name"-->
+<!--        android:theme="@style/AppTheme"-->
+<!--        tools:targetApi="m">-->
 
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
+<!--        <uses-library-->
+<!--            android:name="org.apache.http.legacy"-->
+<!--            android:required="false" />-->
 
-        <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:windowSoftInputMode="adjustPan"-->
+<!--            android:label="@string/app_name">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
-        <activity
-            android:name=".details.PostDetailsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+<!--        <activity-->
+<!--            android:name=".details.PostDetailsActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data android:host="developerslife.ru" />
-                <data android:pathPattern="/.*" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-        </activity>
+<!--                <data android:host="developerslife.ru" />-->
+<!--                <data android:pathPattern="/.*" />-->
+<!--                <data android:scheme="http" />-->
+<!--                <data android:scheme="https" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
-        <activity
-            android:name=".favorites.FavoritesActivity"
-            android:label="@string/title_favorites" />
+<!--        <activity-->
+<!--            android:name=".favorites.FavoritesActivity"-->
+<!--            android:label="@string/title_favorites" />-->
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+<!--        <provider-->
+<!--            android:name="androidx.core.content.FileProvider"-->
+<!--            android:authorities="${applicationId}.provider"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/file_paths" />-->
+<!--        </provider>-->
 
-        <activity
-            android:name=".GifViewerActivity"
-            android:label="@string/app_name"
-            android:theme="@style/GifViewerTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+<!--        <activity-->
+<!--            android:name=".GifViewerActivity"-->
+<!--            android:label="@string/app_name"-->
+<!--            android:theme="@style/GifViewerTheme">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data android:mimeType="image/gif" />
-            </intent-filter>
+<!--                <data android:mimeType="image/gif" />-->
+<!--            </intent-filter>-->
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data android:pathPattern=".*\\.gif" />
-                <data android:pathPattern=".*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />
-                <data android:host="*" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-        </activity>
-    </application>
+<!--                <data android:pathPattern=".*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.gif" />-->
+<!--                <data android:host="*" />-->
+<!--                <data android:scheme="http" />-->
+<!--                <data android:scheme="https" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+<!--    </application>-->
 </manifest>

@@ -1,16 +1,28 @@
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+
+//apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.marchelo.developerslite"
+//        applicationId "com.marchelo.developerslite"
         minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 8
-        versionName "3.0." + defaultConfig.versionCode
-        vectorDrawables.useSupportLibrary = true
+//        targetSdkVersion 28
+//        versionCode 8
+//        versionName "3.0." + defaultConfig.versionCode
+//        vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -24,32 +36,32 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    Properties props = new Properties()
-    props.load(new FileInputStream(file(project.property("release_config_file"))))
+//    Properties props = new Properties()
+//    props.load(new FileInputStream(file(project.property("release_config_file"))))
 
-    signingConfigs {
-        release {
-            storeFile file(props['keystore.file'])
-            storePassword props['keystore.password']
-            keyAlias props['key.alias']
-            keyPassword props['key.password']
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file(props['keystore.file'])
+//            storePassword props['keystore.password']
+//            keyAlias props['key.alias']
+//            keyPassword props['key.password']
+//        }
+//    }
 
-    buildTypes {
-        debug {
-            minifyEnabled false
-//            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
-        }
-        release {
-            //TODO enable it
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //noinspection GroovyAssignabilityCheck
-            signingConfig signingConfigs.release
-        }
-    }
+//    buildTypes {
+//        debug {
+//            minifyEnabled false
+////            applicationIdSuffix ".debug"
+//            versionNameSuffix "-debug"
+//        }
+//        release {
+//            //TODO enable it
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            //noinspection GroovyAssignabilityCheck
+//            signingConfig signingConfigs.release
+//        }
+//    }
 }
 
 dependencies {
@@ -75,6 +87,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.koushikdutta.ion:ion:2.1.6'
 
@@ -94,5 +109,5 @@ dependencies {
     implementation 'com.ms-square:expandableTextView:0.1.4'
 }
 
-// Add to the bottom of the file
-apply plugin: 'com.google.gms.google-services'
+//// Add to the bottom of the file
+//apply plugin: 'com.google.gms.google-services'

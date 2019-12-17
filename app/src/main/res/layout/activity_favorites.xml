@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/favorites_list_fragment"
-        class="com.marchelo.developerslite.favorites.FavoritesListFragment"
+        class="com.marchelo.developerslite2.favorites.FavoritesListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
